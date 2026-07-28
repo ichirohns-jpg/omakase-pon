@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f766e">
+  <title>ふじこの志木案内〜ぽん</title>
+  <meta name="description" content="志木の魅力、河童像、お店、歴史、イベント、紙芝居をふじこが紹介します。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ふじこの志木案内〜ぽん">
+  <meta property="og:description" content="志木のことなら〜ふじこにおまかせ❣️">
+  <meta property="og:url" content="https://ichirohns-jpg.github.io/omakase-pon/">
+  <meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ふじこの志木案内〜ぽん">
+  <meta name="twitter:description" content="志木のことなら〜ふじこにおまかせ❣️">
+  <meta name="twitter:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+
+  <style>
+    :root{
+      --green:#0f766e;
+      --deep:#115e59;
+      --lime:#84cc16;
+      --pink:#f9a8d4;
+      --ink:#21443d;
+      --muted:#58716b;
+      --line:#d8eee6;
+      --shadow:0 12px 28px rgba(20,83,65,.12);
+    }
+
+    *{box-sizing:border-box}
+
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      color:var(--ink);
+      background:linear-gradient(180deg,#eefcf7 0%,#fffdf4 55%,#fdf2f8 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+      line-height:1.7;
+    }
+
+    a{color:inherit}
+    button,input,textarea,select{font:inherit}
+
+    .wrap{
+      width:min(1120px,94%);
+      margin:auto;
+      padding-bottom:100px;
+    }
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 0;
+      background:#eefcf7e8;
+      backdrop-filter:blur(12px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      text-decoration:none;
+      font-weight:900;
+      color:var(--deep);
+    }
+
+    .brand img{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid #fff;
+      box-shadow:0 4px 12px #115e5930;
+    }
+
+    .brand span{
+      font-size:14px;
+      line-height:1.2;
+    }
+
+    .topnav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      justify-content:flex-end;
+    }
+
+    .topnav a{
+      padding:7px 10px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      font-size:12px;
+      font-weight:900;
+      text-decoration:none;
+      color:var(--deep);
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
+      background:#d7f4e8;
+      box-shadow:var(--shadow);
+    }
+
+    .hero img{
+      display:block;
+      width:100%;
+      height:min(52vw,420px);
+      object-fit:cover;
+      object-position:center 58%;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,#064e3bba 0%,#064e3b30 55%,transparent 100%);
+      pointer-events:none;
+    }
+
+    .heroText{
+      position:absolute;
+      z-index:1;
+      left:22px;
+      bottom:22px;
+      max-width:650px;
+      color:#fff;
+      text-shadow:0 2px 10px #0008;
+    }
+
+    .heroText small{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      background:#fef08acc;
+      color:#365314;
+      font-weight:900;
+      text-shadow:none;
+    }
+
+    .heroText h1{
+      margin:8px 0 0;
+      font-size:clamp(28px,7vw,62px);
+      line-height:1.1;
+    }
+
+    .heroText p{
+      margin:8px 0 0;
+      font-weight:800;
+      font-size:clamp(14px,2.2vw,20px);
+    }
+
+    .intro{
+      margin-top:16px;
+      padding:18px;
+      border-radius:24px;
+      background:#fff;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+    }
+
+    .intro h2{
+      margin:0;
+      color:var(--deep);
+      font-size:clamp(24px,5vw,38px);
+      line-height:1.25;
+    }
+
+    .intro p{
+      margin:8px 0;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .catch{
+      color:#be185d!important;
+      font-size:clamp(20px,4vw,30px)!important;
+      font-weight:900!important;
+    }
+
+    .actions{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:9px;
+      margin-top:14px;
+    }
+
+    .btn{
+      display:block;
+      padding:12px 14px;
+      border:0;
+      border-radius:999px;
+      background:var(--green);
+      color:#fff;
+      text-align:center;
+      text-decoration:none;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 6px 14px #0f766e2b;
+    }
+
+    .btn.yellow{
+      background:#facc15;
+      color:#365314;
+    }
+
+    .btn.pink{
+      background:#db2777;
+    }
+
+    .btn.light{
+      background:#ecfdf5;
+      color:var(--deep);
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+
+    .section{
+      margin-top:18px;
+      padding:18px;
+      border-radius:24px;
+      background:#fffffff5;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .sectionHead{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .section h2{
+      margin:0;
+      color:var(--deep);
+      font-size:clamp(24px,5vw,36px);
+      line-height:1.25;
+    }
+
+    .sectionLead{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .filterbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      margin-top:14px;
+    }
+
+    .filterbar a{
+      padding:8px 11px;
+      border-radius:999px;
+      background:#ecfdf5;
+      border:1px solid var(--line);
+      color:var(--deep);
+      font-size:12px;
+      font-weight:900;
+      text-decoration:none;
+    }
+
+    .filterbar a.active{
+      background:#fef08a;
+      border-color:#facc15;
+    }
+
+    .status{
+      margin-top:12px;
+      padding:11px 13px;
+      border-radius:15px;
+      background:#f0fdfa;
+      color:var(--deep);
+      font-weight:800;
+    }
+
+    .status.error{
+      background:#fff1f2;
+      color:#9f1239;
+    }
+
+    .articles{
+      display:grid;
+      gap:15px;
+      margin-top:15px;
+    }
+
+    .card{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:#fff;
+      box-shadow:0 8px 22px #115e5912;
+    }
+
+    .cardTop{
+      padding:14px 15px 8px;
+    }
+
+    .date{
+      color:#be185d;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .card h3{
+      margin:3px 0 0;
+      color:var(--deep);
+      font-size:24px;
+      line-height:1.3;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      margin-top:7px;
+    }
+
+    .tag{
+      padding:3px 8px;
+      border-radius:999px;
+      background:#ecfccb;
+      color:#3f6212;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .body{
+      padding:0 15px;
+      color:var(--muted);
+      font-weight:700;
+      white-space:pre-line;
+    }
+
+    .media{
+      margin-top:12px;
+      background:#052e2b;
+    }
+
+    .media iframe{
+      display:block;
+      width:100%;
+      aspect-ratio:16/9;
+      border:0;
+    }
+
+    .slider{
+      position:relative;
+      overflow:hidden;
+      background:#ecfdf5;
+    }
+
+    .sliderTrack{
+      display:flex;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      scrollbar-width:none;
+    }
+
+    .sliderTrack::-webkit-scrollbar{
+      display:none;
+    }
+
+    .sliderTrack img{
+      flex:0 0 100%;
+      width:100%;
+      aspect-ratio:16/10;
+      object-fit:cover;
+      scroll-snap-align:start;
+    }
+
+    .slideHint{
+      padding:6px;
+      text-align:center;
+      color:var(--deep);
+      background:#ecfdf5;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .location{
+      margin:12px 15px 0;
+      padding:11px 12px;
+      border-radius:15px;
+      background:#fefce8;
+      border:1px solid #fde68a;
+      color:#713f12;
+      font-weight:900;
+    }
+
+    .location a{
+      display:block;
+      margin-top:6px;
+      color:#92400e;
+      font-size:14px;
+    }
+
+    .articleFooter{
+      margin:15px;
+      padding-top:13px;
+      border-top:1px solid var(--line);
+    }
+
+    .support{
+      margin:0;
+      color:#be185d;
+      font-weight:900;
+    }
+
+    .subscribe{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:8px;
+      padding:11px 12px;
+      border-radius:15px;
+      background:#fff1f2;
+      color:#be123c;
+      text-decoration:none;
+      font-weight:900;
+    }
+
+    .share{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+    }
+
+    .share button,
+    .share a{
+      padding:8px 10px;
+      border:0;
+      border-radius:999px;
+      background:#f1f5f9;
+      color:#334155;
+      font-size:12px;
+      font-weight:900;
+      text-decoration:none;
+      cursor:pointer;
+    }
+
+    .share .fb{
+      background:#e0edff;
+      color:#1877f2;
+    }
+
+    .share .x{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .share .line{
+      background:#dcfce7;
+      color:#15803d;
+    }
+
+    .share .insta{
+      background:#fce7f3;
+      color:#be185d;
+    }
+
+    .cardActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:7px;
+      margin-top:10px;
+    }
+
+    .mini{
+      padding:9px 8px;
+      border:0;
+      border-radius:999px;
+      background:#ecfdf5;
+      color:var(--deep);
+      font-weight:900;
+      cursor:pointer;
+      text-align:center;
+      text-decoration:none;
+    }
+
+    .archiveList{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      margin-top:13px;
+    }
+
+    .archiveList a{
+      padding:11px;
+      border-radius:15px;
+      background:#ecfdf5;
+      color:var(--deep);
+      text-decoration:none;
+      font-weight:900;
+      text-align:center;
+    }
+
+    .archiveList span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .messages{
+      display:grid;
+      gap:9px;
+      margin-top:14px;
+    }
+
+    .message{
+      padding:12px;
+      border-radius:16px;
+      background:#fff7fb;
+      border:1px solid #fbcfe8;
+    }
+
+    .message b{
+      color:#be185d;
+    }
+
+    .message small{
+      display:block;
+      color:#8a6476;
+      font-weight:700;
+    }
+
+    .message p{
+      margin:4px 0 0;
+      white-space:pre-line;
+      font-weight:700;
+    }
+
+    .form{
+      display:grid;
+      gap:10px;
+      margin-top:15px;
+      padding:14px;
+      border-radius:18px;
+      background:#f0fdfa;
+    }
+
+    .form label{
+      display:grid;
+      gap:4px;
+      color:var(--deep);
+      font-weight:900;
+    }
+
+    .form input,
+    .form textarea,
+    .form select{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid #b7ddd2;
+      border-radius:12px;
+      background:#fff;
+      color:var(--ink);
+    }
+
+    .form textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .form small{
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .footer{
+      margin-top:24px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .bottom{
+      position:fixed;
+      z-index:30;
+      left:0;
+      right:0;
+      bottom:0;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      background:#fffffff2;
+      border-top:1px solid var(--line);
+      box-shadow:0 -8px 22px #115e5918;
+    }
+
+    .bottom a{
+      padding:7px 3px;
+      text-align:center;
+      color:var(--deep);
+      font-size:11px;
+      font-weight:900;
+      text-decoration:none;
+    }
+
+    .bottom span{
+      display:block;
+      font-size:19px;
+      line-height:1.1;
+    }
+
+    .empty{
+      padding:22px;
+      text-align:center;
+      border-radius:16px;
+      background:#f8fafc;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    @media(min-width:700px){
+      .actions{
+        grid-template-columns:repeat(4,1fr);
+      }
+
+      .articles{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .archiveList{
+        grid-template-columns:repeat(4,1fr);
+      }
+    }
+
+    @media(min-width:1050px){
+      .articles{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="header">
+      <a class="brand" href="./">
+        <img src="fujiko.jpg" alt="ふじこ" onerror="this.style.display='none'">
+        <span>ふじこの<br>志木案内〜ぽん</span>
+      </a>
+
+      <nav class="topnav">
+        <a href="#articles">記事</a>
+        <a href="#archives">アーカイブ</a>
+        <a href="#messages">応援メッセージ</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="top" class="hero">
+        <img src="fujiko-top.jpg" alt="ふじこの志木案内〜ぽん" onerror="this.style.background='#b7ead8'">
+
+        <div class="heroText">
+          <small>志木お助け隊</small>
+          <h1>ふじこの<br>志木案内〜ぽん</h1>
+          <p>志木のことなら〜ふじこにおまかせ❣️</p>
+        </div>
+      </section>
+
+      <section class="intro">
+        <h2>志木の街は、ふじこにおまかせ！</h2>
+        <p class="catch">へんしん……ぽん！</p>
+        <p>
+          志木の歴史、自然、河童像、お店、イベント、紙芝居。
+          ふじこが動画や写真で楽しく案内します。
+        </p>
+
+        <div class="actions">
+          <a class="btn yellow" href="#articles">最新記事を見る</a>
+          <a class="btn pink" href="#messages">応援メッセージ</a>
+          <a class="btn light" id="channelButton" href="#" target="_blank" rel="noopener">YouTubeを見る</a>
+          <a class="btn light" href="#archives">月別アーカイブ</a>
+        </div>
+      </section>
+
+      <section id="articles" class="section">
+        <div class="sectionHead">
+          <div>
+            <h2 id="articleHeading">新着記事</h2>
+            <p class="sectionLead">
+              動画または画像で、志木のことを紹介します。
+            </p>
+          </div>
+        </div>
+
+        <div id="categoryFilters" class="filterbar"></div>
+
+        <div id="articleStatus" class="status">
+          記事を読み込んでいます……
+        </div>
+
+        <div id="articlesList" class="articles"></div>
+      </section>
+
+      <section id="archives" class="section">
+        <h2>月別アーカイブ</h2>
+        <p class="sectionLead">
+          記事の日付から自動的に月ごとに整理します。
+        </p>
+
+        <div id="archiveList" class="archiveList"></div>
+      </section>
+
+      <section id="messages" class="section">
+        <h2>ふじこに応援メッセージをお願いします</h2>
+        <p class="sectionLead">
+          ふじこと志木お助け隊への応援を、ぜひお寄せください❣️
+        </p>
+
+        <div id="messagesList" class="messages"></div>
+
+        <form id="messageForm" class="form">
+          <label>
+            名前（ニックネーム可）
+            <input id="messageName" name="name" maxlength="50" required placeholder="例：しきっこ">
+          </label>
+
+          <label>
+            応援メッセージ
+            <textarea id="messageText" name="message" maxlength="500" required placeholder="ふじこへの応援メッセージを書いてください"></textarea>
+          </label>
+
+          <label>
+            メッセージの掲載
+            <select id="messageAllow" name="allow" required>
+              <option value="">選択してください</option>
+              <option value="はい">掲載してよい</option>
+              <option value="いいえ">掲載しない</option>
+            </select>
+          </label>
+
+          <small>
+            掲載を許可したメッセージは、確認後にサイトへ表示します。
+          </small>
+
+          <button class="btn pink" type="submit">
+            応援メッセージを送る
+          </button>
+
+          <div id="messageStatus" class="status" hidden></div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      ふじこの志木案内〜ぽん<br>
+      志木のことなら〜ふじこにおまかせ❣️
+    </footer>
+  </div>
+
+  <nav class="bottom">
+    <a href="#top"><span>🏠</span>トップ</a>
+    <a href="#articles"><span>📖</span>記事</a>
+    <a href="#archives"><span>🗓️</span>月別</a>
+    <a href="#messages"><span>💌</span>応援</a>
+  </nav>
+
+  <script>
+    const GAS_URL =
+      "https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
+
+    const SITE_URL =
+      "https://ichirohns-jpg.github.io/omakase-pon/";
+
+    // 正式なチャンネルURLが決まったら、ここだけ差し替えます。
+    const YOUTUBE_CHANNEL_URL =
+      "https://www.youtube.com/results?search_query=%E5%BF%97%E6%9C%A8%E3%81%8A%E5%8A%A9%E3%81%91%E9%9A%8A";
+
+    const state = {
+      articles: [],
+      archives: [],
+      params: new URLSearchParams(location.search),
+    };
+
+    document.getElementById("channelButton").href =
+      YOUTUBE_CHANNEL_URL;
+
+    function loadJsonp(params) {
+      return new Promise(function(resolve, reject) {
+        const callbackName =
+          "fujikoCallback_" +
+          Date.now() +
+          "_" +
+          Math.floor(Math.random() * 10000);
+
+        const script = document.createElement("script");
+        const query = new URLSearchParams(params);
+
+        query.set("callback", callbackName);
+        script.src = GAS_URL + "?" + query.toString();
+
+        let timer = setTimeout(function() {
+          cleanup();
+          reject(new Error("通信がタイムアウトしました。"));
+        }, 20000);
+
+        window[callbackName] = function(data) {
+          clearTimeout(timer);
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = function() {
+          clearTimeout(timer);
+          cleanup();
+          reject(new Error("GASに接続できませんでした。"));
+        };
+
+        function cleanup() {
+          delete window[callbackName];
+
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        }
+
+        document.body.appendChild(script);
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function safeUrl(value) {
+      const text = String(value || "").trim();
+
+      if (!/^https?:\/\//i.test(text)) {
+        return "";
+      }
+
+      return text;
+    }
+
+    function nl2br(value) {
+      return escapeHtml(value).replace(/\n/g, "<br>");
+    }
+
+    function articleUrl(articleId) {
+      const url = new URL(SITE_URL);
+      url.searchParams.set("id", articleId);
+      return url.href;
+    }
+
+    function shareButtons(article) {
+      const url = articleUrl(article.articleId);
+      const title =
+        article.theme || "ふじこの志木案内〜ぽん";
+
+      const encodedUrl = encodeURIComponent(url);
+      const encodedText = encodeURIComponent(
+        title + "｜ふじこの志木案内〜ぽん"
+      );
+
+      return `
+        <div class="share">
+          <a class="fb"
+             href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"
+             target="_blank"
+             rel="noopener">
+             Facebook
+          </a>
+
+          <a class="x"
+             href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}"
+             target="_blank"
+             rel="noopener">
+             X
+          </a>
+
+          <a class="line"
+             href="https://social-plugins.line.me/lineit/share?url=${encodedUrl}"
+             target="_blank"
+             rel="noopener">
+             LINE
+          </a>
+
+          <button type="button"
+            onclick="copyUrl('${encodeURIComponent(url)}')">
+            リンクコピー
+          </button>
+
+          <button type="button"
+            class="insta"
+            onclick="shareInstagram('${encodeURIComponent(url)}')">
+            Instagram
+          </button>
+        </div>
+      `;
+    }
+
+    function mediaHtml(article) {
+      if (
+        article.format === "YouTube" &&
+        safeUrl(article.youtubeEmbedUrl)
+      ) {
+        return `
+          <div class="media">
+            <iframe
+              src="${escapeHtml(article.youtubeEmbedUrl)}?rel=0&modestbranding=1"
+              title="${escapeHtml(article.theme)}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+        `;
+      }
+
+      const images =
+        Array.isArray(article.images)
+          ? article.images
+              .map(safeUrl)
+              .filter(Boolean)
+              .slice(0, 5)
+          : [];
+
+      if (!images.length) {
+        return "";
+      }
+
+      return `
+        <div class="media slider">
+          <div class="sliderTrack">
+            ${images.map(function(src, index) {
+              return `
+                <img
+                  src="${escapeHtml(src)}"
+                  alt="${escapeHtml(article.theme)} ${index + 1}枚目"
+                  loading="lazy">
+              `;
+            }).join("")}
+          </div>
+
+          <div class="slideHint">
+            画像を横にスライドできます（${images.length}枚）
+          </div>
+        </div>
+      `;
+    }
+
+    function articleCard(article) {
+      const categories =
+        Array.isArray(article.categories)
+          ? article.categories
+          : [];
+
+      const map =
+        article.hasMap && safeUrl(article.mapUrl)
+          ? `
+            <div class="location">
+              📍 ${escapeHtml(article.placeName || "場所案内")}
+              <a
+                href="${escapeHtml(article.mapUrl)}"
+                target="_blank"
+                rel="noopener">
+                Googleマップで場所を見る
+              </a>
+            </div>
+          `
+          : "";
+
+      return `
+        <article class="card">
+          <div class="cardTop">
+            <div class="date">
+              ${escapeHtml(article.date || "")}
+            </div>
+
+            <h3>
+              ${escapeHtml(article.theme || "無題の記事")}
+            </h3>
+
+            <div class="tags">
+              ${categories.map(function(category) {
+                return `
+                  <span class="tag">
+                    ${escapeHtml(category)}
+                  </span>
+                `;
+              }).join("")}
+
+              <span class="tag">
+                ${escapeHtml(article.format || "記事")}
+              </span>
+            </div>
+          </div>
+
+          <div class="body">
+            ${nl2br(article.content || "")}
+          </div>
+
+          ${mediaHtml(article)}
+          ${map}
+
+          <div class="articleFooter">
+            <p class="support">
+              ${escapeHtml(
+                article.supportMessage ||
+                "志木の魅力を届ける、ふじこと志木お助け隊の活動を応援してください。"
+              )}
+            </p>
+
+            <a
+              class="subscribe"
+              href="${YOUTUBE_CHANNEL_URL}"
+              target="_blank"
+              rel="noopener">
+              📺
+              ${escapeHtml(
+                article.youtubeSubscribeText ||
+                "志木お助け隊のYouTubeチャンネル登録をお願いします！"
+              )}
+            </a>
+
+            ${shareButtons(article)}
+
+            <div class="cardActions">
+              <a
+                class="mini"
+                href="${escapeHtml(articleUrl(article.articleId))}">
+                記事を開く
+              </a>
+
+              <button
+                class="mini"
+                type="button"
+                onclick="copyUrl('${encodeURIComponent(articleUrl(article.articleId))}')">
+                URLをコピー
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderFilters() {
+      const categories = [
+        "お店紹介",
+        "かっぱ像紹介",
+        "志木市の歴史",
+        "イベント紹介",
+        "紙芝居",
+        "自然・公園",
+        "志木の魅力・移住定住",
+      ];
+
+      const current =
+        state.params.get("category") || "";
+
+      const base = new URL(SITE_URL);
+
+      let html = `
+        <a
+          class="${!current ? "active" : ""}"
+          href="${base.href}#articles">
+          すべて
+        </a>
+      `;
+
+      html += categories.map(function(category) {
+        const url = new URL(SITE_URL);
+        url.searchParams.set("category", category);
+
+        return `
+          <a
+            class="${current === category ? "active" : ""}"
+            href="${url.href}#articles">
+            ${escapeHtml(category)}
+          </a>
+        `;
+      }).join("");
+
+      document.getElementById("categoryFilters").innerHTML =
+        html;
+    }
+
+    function renderArchives() {
+      const target =
+        document.getElementById("archiveList");
+
+      if (!state.archives.length) {
+        target.innerHTML = `
+          <div class="empty">
+            公開記事が増えると、ここに月別アーカイブが表示されます。
+          </div>
+        `;
+        return;
+      }
+
+      target.innerHTML = state.archives.map(function(archive) {
+        const url = new URL(SITE_URL);
+        url.searchParams.set("month", archive.month);
+
+        return `
+          <a href="${url.href}#articles">
+            ${escapeHtml(archive.label)}
+            <span>${archive.count}件の記事</span>
+          </a>
+        `;
+      }).join("");
+    }
+
+    function renderArticles() {
+      const target =
+        document.getElementById("articlesList");
+
+      const heading =
+        document.getElementById("articleHeading");
+
+      const id = state.params.get("id");
+      const category = state.params.get("category");
+      const month = state.params.get("month");
+
+      let articles = state.articles.slice();
+
+      if (id) {
+        articles = articles.filter(function(article) {
+          return article.articleId === id;
+        });
+      }
+
+      if (category) {
+        articles = articles.filter(function(article) {
+          return article.categories.indexOf(category) >= 0;
+        });
+      }
+
+      if (month) {
+        articles = articles.filter(function(article) {
+          return article.month === month;
+        });
+      }
+
+      if (id) {
+        heading.textContent =
+          articles.length
+            ? "記事詳細"
+            : "記事が見つかりません";
+      } else if (category) {
+        heading.textContent = category;
+      } else if (month) {
+        heading.textContent =
+          month.replace("-", "年") + "月の記事";
+      } else {
+        heading.textContent = "新着記事";
+      }
+
+      if (!articles.length) {
+        target.innerHTML = `
+          <div class="empty">
+            現在公開されている記事はありません。
+          </div>
+        `;
+        return;
+      }
+
+      target.innerHTML =
+        articles.map(articleCard).join("");
+    }
+
+    function renderMessages(messages) {
+      const target =
+        document.getElementById("messagesList");
+
+      if (!messages || !messages.length) {
+        target.innerHTML = `
+          <div class="empty">
+            応援メッセージが届くと、ここに表示されます。
+          </div>
+        `;
+        return;
+      }
+
+      target.innerHTML = messages.map(function(item) {
+        return `
+          <div class="message">
+            <b>${escapeHtml(item.name || "匿名さん")}</b>
+            <small>${escapeHtml(item.receivedAt || "")}</small>
+            <p>${nl2br(item.message || "")}</p>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function loadArticles() {
+      const status =
+        document.getElementById("articleStatus");
+
+      try {
+        const data =
+          await loadJsonp({ mode: "articles" });
+
+        if (!data.ok) {
+          throw new Error(
+            data.error ||
+            "記事を取得できませんでした。"
+          );
+        }
+
+        state.articles =
+          Array.isArray(data.articles)
+            ? data.articles
+            : [];
+
+        state.archives =
+          Array.isArray(data.archives)
+            ? data.archives
+            : [];
+
+        renderFilters();
+        renderArticles();
+        renderArchives();
+
+        status.hidden = true;
+      } catch (error) {
+        status.textContent = error.message;
+        status.classList.add("error");
+      }
+    }
+
+    async function loadMessages() {
+      try {
+        const data =
+          await loadJsonp({
+            mode: "messages",
+            limit: "30",
+          });
+
+        renderMessages(
+          data.ok ? data.messages : []
+        );
+      } catch (error) {
+        document.getElementById("messagesList").innerHTML = `
+          <div class="empty">
+            応援メッセージを読み込めませんでした。
+          </div>
+        `;
+      }
+    }
+
+    async function copyUrl(encodedUrl) {
+      const url = decodeURIComponent(encodedUrl);
+
+      try {
+        await navigator.clipboard.writeText(url);
+        alert("リンクをコピーしました。");
+      } catch (error) {
+        window.prompt(
+          "リンクをコピーしてください",
+          url
+        );
+      }
+    }
+
+    async function shareInstagram(encodedUrl) {
+      const url = decodeURIComponent(encodedUrl);
+
+      try {
+        await navigator.clipboard.writeText(url);
+        alert(
+          "記事URLをコピーしました。Instagramを開きます。"
+        );
+      } catch (error) {
+        window.prompt(
+          "記事URLをコピーしてください",
+          url
+        );
+      }
+
+      window.open(
+        "https://www.instagram.com/",
+        "_blank",
+        "noopener"
+      );
+    }
+
+    document
+      .getElementById("messageForm")
+      .addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const button =
+          event.target.querySelector(
+            "button[type=submit]"
+          );
+
+        const status =
+          document.getElementById("messageStatus");
+
+        button.disabled = true;
+        button.textContent = "送信しています……";
+
+        status.hidden = false;
+        status.className = "status";
+        status.textContent = "送信しています……";
+
+        try {
+          const data =
+            await loadJsonp({
+              mode: "submitMessage",
+              name:
+                document.getElementById(
+                  "messageName"
+                ).value,
+              message:
+                document.getElementById(
+                  "messageText"
+                ).value,
+              allow:
+                document.getElementById(
+                  "messageAllow"
+                ).value,
+            });
+
+          if (!data.ok) {
+            throw new Error(
+              data.error ||
+              "送信できませんでした。"
+            );
+          }
+
+          status.textContent =
+            data.message ||
+            "応援メッセージを受け付けました。";
+
+          document.getElementById(
+            "messageForm"
+          ).reset();
+
+          loadMessages();
+        } catch (error) {
+          status.className = "status error";
+          status.textContent = error.message;
+        } finally {
+          button.disabled = false;
+          button.textContent =
+            "応援メッセージを送る";
+        }
+      });
+
+    renderFilters();
+    loadArticles();
+    loadMessages();
+  </script>
+</body>
+</html>
