@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>記事｜ふじこの志木案内〜ぽん</title>
+<meta name="description" content="ふじこの志木案内〜ぽんの記事です。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="記事｜ふじこの志木案内〜ぽん">
+<meta property="og:description" content="志木のことなら〜ふじこにおまかせ❣️">
+<meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="fujiko.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="fujiko.jpg">
+
+<style>
+:root{
+--water:#0f766e;
+--deep:#075e59;
+--light:#e9faf5;
+--pink:#d72d79;
+--pinkLight:#fff0f7;
+--ink:#24443d;
+--muted:#637973;
+--line:#d5eee5;
+--shadow:0 8px 24px rgba(17,94,89,.13);
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+padding-bottom:80px;
+color:var(--ink);
+background:linear-gradient(180deg,#e9faf5,#fffdf7 60%,#fff4fa);
+font-family:"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+font-size:17px;
+line-height:1.7;
+}
+
+.page{
+width:min(100%,760px);
+min-height:100vh;
+margin:auto;
+background:#fffdf9ee;
+box-shadow:0 0 30px #115e5914;
+}
+
+.header{
+position:sticky;
+top:0;
+z-index:10;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+background:rgba(7,94,89,.98);
+border-bottom:3px solid #8ed8bc;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:9px;
+color:#fff;
+text-decoration:none;
+font-weight:900;
+}
+
+.brand img{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #fff;
+}
+
+.brand span{
+font-size:17px;
+line-height:1.2;
+}
+
+.back{
+padding:9px 11px;
+border-radius:13px;
+background:#d7f7eb;
+color:var(--deep);
+font-size:13px;
+font-weight:900;
+text-decoration:none;
+white-space:nowrap;
+}
+
+main{padding:14px}
+
+.card{
+margin-top:15px;
+padding:18px 15px;
+background:#fff;
+border:1px solid var(--line);
+border-radius:23px;
+box-shadow:var(--shadow);
+}
+
+.date{
+color:var(--pink);
+font-size:13px;
+font-weight:900;
+}
+
+h1{
+margin:4px 0 0;
+color:var(--deep);
+font-size:clamp(27px,7vw,40px);
+line-height:1.3;
+}
+
+.tags{
+display:flex;
+flex-wrap:wrap;
+gap:5px;
+margin-top:9px;
+}
+
+.tag{
+padding:3px 8px;
+border-radius:999px;
+background:#eef9d8;
+color:#4e7024;
+font-size:11px;
+font-weight:900;
+}
+
+.content{
+margin-top:15px;
+color:var(--muted);
+font-weight:700;
+white-space:pre-line;
+}
+
+.media{
+margin:15px -15px 0;
+background:#073f3b;
+}
+
+.media iframe{
+display:block;
+width:100%;
+aspect-ratio:16/9;
+border:0;
+}
+
+.slider{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+scrollbar-width:none;
+}
+
+.slider::-webkit-scrollbar{display:none}
+
+.slider img{
+flex:0 0 100%;
+width:100%;
+aspect-ratio:16/10;
+object-fit:cover;
+scroll-snap-align:start;
+}
+
+.slideHint{
+padding:6px;
+background:var(--light);
+color:var(--deep);
+text-align:center;
+font-size:12px;
+font-weight:900;
+}
+
+.location{
+margin:15px 0 0;
+padding:11px;
+border-radius:14px;
+background:#fff9df;
+border:1px solid #f1d67d;
+color:#73510a;
+font-weight:900;
+}
+
+.location a{
+display:block;
+margin-top:5px;
+color:#8d5d00;
+}
+
+.supportBox{
+margin-top:18px;
+padding-top:15px;
+border-top:1px solid var(--line);
+}
+
+.support{
+margin:0;
+color:var(--pink);
+font-weight:900;
+}
+
+.subscribe{
+display:block;
+margin-top:9px;
+padding:12px;
+border-radius:15px;
+background:var(--pinkLight);
+color:#b4195e;
+text-decoration:none;
+font-weight:900;
+}
+
+.share{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-top:11px;
+}
+
+.share a,
+.share button{
+padding:8px 10px;
+border:0;
+border-radius:999px;
+background:#f1f5f9;
+color:#334155;
+font-size:12px;
+font-weight:900;
+text-decoration:none;
+cursor:pointer;
+}
+
+.share .fb{background:#e1edff;color:#1877f2}
+.share .x{background:#e5e7eb;color:#111827}
+.share .line{background:#ddf9e7;color:#15803d}
+.share .insta{background:#fce4f1;color:#b4195e}
+
+.empty{
+padding:22px;
+border-radius:15px;
+background:#f8fbfa;
+color:var(--muted);
+text-align:center;
+font-weight:800;
+}
+
+.footer{
+padding:0 14px 20px;
+color:var(--muted);
+text-align:center;
+font-size:13px;
+font-weight:800;
+}
+
+.bottom{
+position:fixed;
+z-index:20;
+left:0;
+right:0;
+bottom:0;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+padding-bottom:env(safe-area-inset-bottom);
+background:#fffffff5;
+border-top:1px solid var(--line);
+box-shadow:0 -7px 20px #115e591b;
+}
+
+.bottom a{
+padding:7px 3px;
+color:var(--deep);
+text-align:center;
+font-size:11px;
+font-weight:900;
+text-decoration:none;
+}
+
+.bottom span{
+display:block;
+font-size:19px;
+line-height:1.1;
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<header class="header">
+<a class="brand" href="./">
+<img src="fujiko.jpg" alt="ふじこ">
+<span>ふじこの<br>志木案内〜ぽん</span>
+</a>
+
+<a class="back" href="./">トップへ戻る</a>
+</header>
+
+<main>
+<section class="card" id="articleBox">
+<div class="empty">記事を読み込んでいます……</div>
+</section>
+</main>
+
+<footer class="footer">
+ふじこの志木案内〜ぽん<br>
+志木のことなら〜ふじこにおまかせ❣️
+</footer>
+
+</div>
+
+<nav class="bottom">
+<a href="./"><span>🏠</span>トップ</a>
+<a href="./#articles"><span>📖</span>記事</a>
+<a href="archive.html"><span>🗓️</span>月別</a>
+<a href="./#messages"><span>💌</span>応援</a>
+</nav>
+
+<script>
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
+
+const SITE_URL =
+"https://ichirohns-jpg.github.io/omakase-pon/";
+
+const CHANNEL_URL =
+"https://www.youtube.com/@shikiconcierge";
+
+const articleId =
+new URLSearchParams(location.search).get("id") || "";
+
+function jsonp(params){
+return new Promise(function(resolve,reject){
+
+const name =
+"article_" +
+Date.now() +
+"_" +
+Math.floor(Math.random()*10000);
+
+const script =
+document.createElement("script");
+
+const query =
+new URLSearchParams(params);
+
+query.set("callback",name);
+
+script.src =
+GAS_URL +
+"?" +
+query.toString();
+
+const timer =
+setTimeout(function(){
+cleanup();
+reject(new Error("通信がタイムアウトしました。"));
+},20000);
+
+window[name] =
+function(data){
+clearTimeout(timer);
+cleanup();
+resolve(data);
+};
+
+script.onerror =
+function(){
+clearTimeout(timer);
+cleanup();
+reject(new Error("GASに接続できませんでした。"));
+};
+
+function cleanup(){
+delete window[name];
+
+if(script.parentNode){
+script.parentNode.removeChild(script);
+}
+}
+
+document.body.appendChild(script);
+});
+}
+
+function esc(value){
+return String(value==null?"":value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+
+function br(value){
+return esc(value).replace(/\n/g,"<br>");
+}
+
+function safeUrl(value){
+const text =
+String(value||"").trim();
+
+return /^https?:\/\//i.test(text)
+?text
+:"";
+}
+
+function getShareUrl(article){
+if(article.shareUrl){
+return article.shareUrl;
+}
+
+return location.href;
+}
+
+function media(article){
+
+if(
+article.format==="YouTube" &&
+safeUrl(article.youtubeEmbedUrl)
+){
+return `
+<div class="media">
+<iframe
+src="${esc(article.youtubeEmbedUrl)}?rel=0&modestbranding=1"
+title="${esc(article.theme)}"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+allowfullscreen>
+</iframe>
+</div>
+`;
+}
+
+const images =
+Array.isArray(article.images)
+?article.images.map(safeUrl).filter(Boolean).slice(0,5)
+:[];
+
+if(!images.length){
+return "";
+}
+
+return `
+<div class="media">
+<div class="slider">
+${images.map(function(src,index){
+return `
+<img
+src="${esc(src)}"
+alt="${esc(article.theme)} ${index+1}枚目"
+loading="lazy">
+`;
+}).join("")}
+</div>
+
+<div class="slideHint">
+画像を横にスライドできます（${images.length}枚）
+</div>
+</div>
+`;
+}
+
+function render(article){
+
+if(!article){
+
+document.getElementById("articleBox").innerHTML =
+`
+<div class="empty">
+記事が見つかりません。
+</div>
+`;
+
+return;
+}
+
+document.title =
+(article.theme||"記事") +
+"｜ふじこの志木案内〜ぽん";
+
+const categories =
+Array.isArray(article.categories)
+?article.categories
+:[];
+
+const map =
+article.hasMap &&
+safeUrl(article.mapUrl)
+?
+`
+<div class="location">
+📍 ${esc(article.placeName||"場所案内")}
+<a
+href="${esc(article.mapUrl)}"
+target="_blank"
+rel="noopener">
+Googleマップで場所を見る
+</a>
+</div>
+`
+:"";
+
+const shareUrl =
+getShareUrl(article);
+
+const encodedUrl =
+encodeURIComponent(shareUrl);
+
+const encodedText =
+encodeURIComponent(
+(article.theme||"志木の記事") +
+"｜ふじこの志木案内〜ぽん"
+);
+
+document.getElementById("articleBox").innerHTML =
+`
+<div class="date">
+${esc(article.date||"")}
+</div>
+
+<h1>
+${esc(article.theme||"無題の記事")}
+</h1>
+
+<div class="tags">
+${categories.map(function(category){
+return `
+<span class="tag">
+${esc(category)}
+</span>
+`;
+}).join("")}
+
+<span class="tag">
+${esc(article.format||"記事")}
+</span>
+</div>
+
+<div class="content">
+${br(article.content||"")}
+</div>
+
+${media(article)}
+${map}
+
+<div class="supportBox">
+<p class="support">
+志木の魅力を届ける、ふじこと志木お助け隊の活動を応援してください。
+</p>
+
+<a
+class="subscribe"
+href="${CHANNEL_URL}"
+target="_blank"
+rel="noopener">
+📺 志木お助け隊のYouTubeチャンネル登録をお願いします！
+</a>
+
+<div class="share">
+<a
+class="fb"
+href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}"
+target="_blank"
+rel="noopener">
+Facebook
+</a>
+
+<a
+class="x"
+href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}"
+target="_blank"
+rel="noopener">
+X
+</a>
+
+<a
+class="line"
+href="https://social-plugins.line.me/lineit/share?url=${encodedUrl}"
+target="_blank"
+rel="noopener">
+LINE
+</a>
+
+<button onclick="copyUrl('${encodeURIComponent(shareUrl)}')">
+リンクコピー
+</button>
+
+<button
+class="insta"
+onclick="instagram('${encodeURIComponent(shareUrl)}')">
+Instagram
+</button>
+</div>
+</div>
+`;
+}
+
+async function copyUrl(encoded){
+
+const url =
+decodeURIComponent(encoded);
+
+try{
+await navigator.clipboard.writeText(url);
+alert("リンクをコピーしました。");
+}catch(error){
+prompt("リンクをコピーしてください",url);
+}
+}
+
+async function instagram(encoded){
+
+const url =
+decodeURIComponent(encoded);
+
+try{
+await navigator.clipboard.writeText(url);
+alert("記事URLをコピーしました。Instagramを開きます。");
+}catch(error){
+prompt("リンクをコピーしてください",url);
+}
+
+window.open(
+"https://www.instagram.com/",
+"_blank",
+"noopener"
+);
+}
+
+async function load(){
+
+if(!articleId){
+
+render(null);
+return;
+}
+
+try{
+
+const data =
+await jsonp({
+mode:"article",
+id:articleId
+});
+
+if(!data.ok){
+throw new Error(
+data.error ||
+"記事を取得できませんでした。"
+);
+}
+
+render(data.article);
+
+}catch(error){
+
+document.getElementById("articleBox").innerHTML =
+`
+<div class="empty">
+${esc(error.message)}
+</div>
+`;
+}
+}
+
+load();
+</script>
+
+</body>
+</html>
