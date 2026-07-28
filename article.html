@@ -27,7 +27,9 @@
 --shadow:0 8px 24px rgba(190,36,109,.12)
 }
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
@@ -42,7 +44,8 @@ line-height:1.8;
 -webkit-text-size-adjust:100%
 }
 
-a,button{
+a,
+button{
 font:inherit;
 -webkit-tap-highlight-color:transparent
 }
@@ -354,9 +357,11 @@ line-height:1.05
 </head>
 
 <body>
+
 <div class="page">
 
 <header class="header">
+
 <a class="brand" href="./">
 <img src="fujiko.jpg" alt="ふじこ">
 <span class="brandTitle">
@@ -368,17 +373,16 @@ line-height:1.05
 </span>
 </a>
 
-<a class="back" href="./">
-トップへ戻る
-</a>
+<a class="back" href="./">トップへ戻る</a>
+
 </header>
 
 <main>
+
 <section id="articleBox" class="articleCard">
-<div class="empty">
-記事を読み込んでいます……
-</div>
+<div class="empty">記事を読み込んでいます……</div>
 </section>
+
 </main>
 
 <footer class="footer">
@@ -396,17 +400,14 @@ line-height:1.05
 </nav>
 
 <script>
-const GAS_URL=
-"https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
+const GAS_URL="https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
 
-const CHANNEL_URL=
-"https://www.youtube.com/@shikiconcierge";
+const CHANNEL_URL="https://www.youtube.com/@shikiconcierge";
 
 const articleId=
 new URLSearchParams(location.search).get("id")||"";
 
 function jsonp(params){
-
 return new Promise(function(resolve,reject){
 
 const name=
@@ -414,118 +415,103 @@ const name=
 Date.now()+
 "_"+Math.floor(Math.random()*10000);
 
-const script=
-document.createElement("script");
+const script=document.createElement("script");
 
-const q=
-new URLSearchParams(params);
+const q=new URLSearchParams(params);
 
 q.set("callback",name);
 
-script.src=
-GAS_URL+
-"?"+
-q.toString();
+script.src=GAS_URL+"?"+q.toString();
 
-const timer=
-setTimeout(function(){
+const timer=setTimeout(function(){
 cleanup();
 reject(new Error("通信がタイムアウトしました。"));
 },20000);
 
-window[name]=
-function(data){
+window[name]=function(data){
 clearTimeout(timer);
 cleanup();
-resolve(data);
+resolve(data)
 };
 
-script.onerror=
-function(){
+script.onerror=function(){
 clearTimeout(timer);
 cleanup();
-reject(new Error("GASに接続できませんでした。"));
+reject(new Error("GASに接続できませんでした。"))
 };
 
 function cleanup(){
 delete window[name];
 
 if(script.parentNode){
-script.parentNode.removeChild(script);
+script.parentNode.removeChild(script)
 }
 }
 
-document.body.appendChild(script);
-
-});
+document.body.appendChild(script)
+})
 }
 
 function esc(v){
-
 return String(v==null?"":v)
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
+.replace(/'/g,"&#039;")
 }
 
 function safeUrl(v){
-
-const s=
-String(v||"").trim();
+const s=String(v||"").trim();
 
 return /^https?:\/\//i.test(s)
 ?s
-:"";
-
+:""
 }
 
 function youtubeEmbed(v){
+const s=String(v||"").trim();
 
-const s=
-String(v||"").trim();
-
-if(!s){
-return "";
-}
+if(!s)return "";
 
 if(/youtube\.com\/embed\//i.test(s)){
-return s;
+return s
 }
 
-let m=
-s.match(/youtu\.be\/([^?&/]+)/i);
+let m=s.match(/youtu\.be\/([^?&/]+)/i);
 
 if(m){
-return "https://www.youtube.com/embed/"+m[1];
+return "https://www.youtube.com/embed/"+m[1]
 }
 
-m=
-s.match(/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i);
+m=s.match(
+/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i
+);
 
 return m
 ?"https://www.youtube.com/embed/"+m[1]
-:"";
-
+:""
 }
 
 function detailUrl(){
+const u=new URL("article.html",location.href);
 
-const u=
-new URL(
-"article.html",
-location.href
-);
+u.searchParams.set("id",articleId);
 
-u.searchParams.set(
-"id",
-articleId
-);
+return u.href
+}
 
-return u.href;
+function sharePageUrl(article){
+const fromGas=
+article&&String(article.shareUrl||"").trim();
 
+if(fromGas){
+return fromGas
+}
+
+return GAS_URL+
+"?mode=share&id="+
+encodeURIComponent(articleId)
 }
 
 function media(article){
@@ -536,29 +522,32 @@ article.youtubeEmbedUrl||
 article.youtubeUrl
 );
 
-if(
-article.format==="YouTube"&&
-embed
-){
+if(article.format==="YouTube"&&embed){
 
-return '<div class="media"><iframe src="'+
+return '<div class="media">'+
+'<iframe src="'+
 esc(embed)+
-'?rel=0&modestbranding=1" title="'+
-esc(article.theme)+
-'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>';
-
+'?rel=0&modestbranding=1" '+
+'title="'+esc(article.theme)+'" '+
+'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" '+
+'allowfullscreen></iframe>'+
+'</div>'
 }
 
 const images=
 Array.isArray(article.images)
-?article.images.map(safeUrl).filter(Boolean).slice(0,5)
+?article.images
+.map(safeUrl)
+.filter(Boolean)
+.slice(0,5)
 :[];
 
 if(!images.length){
-return "";
+return ""
 }
 
-return '<div class="media"><div class="slider">'+
+return '<div class="media">'+
+'<div class="slider">'+
 images.map(function(src,index){
 
 return '<img src="'+
@@ -567,26 +556,27 @@ esc(src)+
 esc(article.theme)+
 " "+
 (index+1)+
-'枚目" loading="lazy">';
+'枚目" loading="lazy">'
 
 }).join("")+
-'</div><div class="slideHint">画像を横にスライドできます（'+
+'</div>'+
+'<div class="slideHint">'+
+'画像を横にスライドできます（'+
 images.length+
-'枚）</div></div>';
-
+'枚）</div>'+
+'</div>'
 }
 
 function render(article){
 
+window.currentArticle=article;
+
 if(!article){
 
-document.getElementById(
-"articleBox"
-).innerHTML=
+document.getElementById("articleBox").innerHTML=
 '<div class="empty">記事が見つかりません。</div>';
 
-return;
-
+return
 }
 
 const categories=
@@ -594,8 +584,7 @@ Array.isArray(article.categories)
 ?article.categories
 :[];
 
-const shareUrl=
-detailUrl();
+const shareUrl=sharePageUrl(article);
 
 const encodedUrl=
 encodeURIComponent(shareUrl);
@@ -607,23 +596,22 @@ encodeURIComponent(
 );
 
 const map=
-article.hasMap&&
-safeUrl(article.mapUrl)
+article.hasMap&&safeUrl(article.mapUrl)
 ?
 '<div class="location">📍 '+
 esc(article.placeName||"場所案内")+
 '<a href="'+
 esc(article.mapUrl)+
-'" target="_blank" rel="noopener">Googleマップで場所を見る</a></div>'
+'" target="_blank" rel="noopener">'+
+'Googleマップで場所を見る</a></div>'
 :"";
 
 document.title=
 (article.theme||"記事")+
 "｜ふじこの志木案内〜ぽん";
 
-document.getElementById(
-"articleBox"
-).innerHTML=
+document.getElementById("articleBox").innerHTML=
+
 '<div class="articleHead">'+
 '<div class="date">'+
 esc(article.date||"")+
@@ -632,44 +620,64 @@ esc(article.date||"")+
 esc(article.theme||"無題の記事")+
 '</h1>'+
 '<div class="tags">'+
+
 categories.map(function(category){
 return '<span class="tag">'+
 esc(category)+
-'</span>';
+'</span>'
 }).join("")+
+
 '<span class="tag">'+
 esc(article.format||"記事")+
 '</span>'+
 '</div>'+
 '</div>'+
+
 '<div class="content">'+
 esc(article.content||"")+
 '</div>'+
+
 media(article)+
+
 map+
-'<div class="support">ふじこと志木お助け隊の活動を応援してください❣️</div>'+
+
+'<div class="support">'+
+'ふじこと志木お助け隊の活動を応援してください❣️'+
+'</div>'+
+
 '<a class="subscribe" href="'+
 CHANNEL_URL+
-'" target="_blank" rel="noopener">📺 YouTubeチャンネルを登録する</a>'+
+'" target="_blank" rel="noopener">'+
+'📺 YouTubeチャンネルを登録する'+
+'</a>'+
+
 '<div class="shareBox">'+
 '<p class="shareTitle">この記事をみんなに知らせる</p>'+
 '<div class="share">'+
-'<a class="fb" href="https://www.facebook.com/sharer/sharer.php?u='+
+
+'<a class="fb" href="'+
+'https://www.facebook.com/sharer/sharer.php?u='+
 encodedUrl+
 '" target="_blank" rel="noopener">Facebook</a>'+
-'<a class="x" href="https://twitter.com/intent/tweet?url='+
+
+'<a class="x" href="'+
+'https://twitter.com/intent/tweet?url='+
 encodedUrl+
 '&text='+
 encodedText+
 '" target="_blank" rel="noopener">X</a>'+
-'<a class="line" href="https://social-plugins.line.me/lineit/share?url='+
+
+'<a class="line" href="'+
+'https://social-plugins.line.me/lineit/share?url='+
 encodedUrl+
 '" target="_blank" rel="noopener">LINE</a>'+
-'<button class="copy" onclick="copyUrl()">リンクコピー</button>'+
-'<button class="insta" onclick="instagram()">Instagram</button>'+
-'</div>'+
-'</div>';
 
+'<button class="copy" onclick="copyUrl()">リンクコピー</button>'+
+
+'<button class="insta" onclick="instagram()">Instagram</button>'+
+
+'</div>'+
+'</div>'
 }
 
 async function copyUrl(){
@@ -677,22 +685,18 @@ async function copyUrl(){
 try{
 
 await navigator.clipboard.writeText(
-detailUrl()
+sharePageUrl(window.currentArticle)
 );
 
-alert(
-"記事URLをコピーしました。"
-);
+alert("記事URLをコピーしました。")
 
 }catch(error){
 
 prompt(
 "リンクをコピーしてください",
-detailUrl()
-);
-
+sharePageUrl(window.currentArticle)
+)
 }
-
 }
 
 async function instagram(){
@@ -703,21 +707,17 @@ window.open(
 "https://www.instagram.com/",
 "_blank",
 "noopener"
-);
-
+)
 }
 
 async function load(){
 
 if(!articleId){
 
-document.getElementById(
-"articleBox"
-).innerHTML=
+document.getElementById("articleBox").innerHTML=
 '<div class="empty">記事IDが指定されていません。</div>';
 
-return;
-
+return
 }
 
 try{
@@ -729,29 +729,21 @@ id:articleId
 });
 
 if(!data.ok){
-
 throw new Error(
 data.error||
 "記事を取得できませんでした。"
 );
-
 }
 
-render(
-data.article
-);
+render(data.article)
 
 }catch(error){
 
-document.getElementById(
-"articleBox"
-).innerHTML=
+document.getElementById("articleBox").innerHTML=
 '<div class="empty">'+
 esc(error.message)+
-'</div>';
-
+'</div>'
 }
-
 }
 
 load();
