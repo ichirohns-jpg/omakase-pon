@@ -1,0 +1,16 @@
+{
+  "name": "ふじこの志木案内〜ぽん",
+  "short_name": "ふじこ志木案内",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#e9faf5",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "fujiko.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
