@@ -22,7 +22,9 @@
 --shadow:0 8px 24px rgba(190,36,109,.12)
 }
 
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
@@ -37,7 +39,9 @@ line-height:1.8;
 -webkit-text-size-adjust:100%
 }
 
-a{color:inherit}
+a{
+color:inherit
+}
 
 .page{
 width:min(100%,760px);
@@ -317,14 +321,18 @@ grid-template-columns:repeat(4,1fr)
 </head>
 
 <body>
+
 <div class="page">
 
 <header class="header">
+
 <a class="brand" href="./">
 <img src="fujiko.jpg" alt="ふじこ">
+
 <span class="brandTitle">
 ふじこの<br>
 志木案内〜ぽん
+
 <span class="brandSub">
 志木のことなら〜ふじこにおまかせ❣️
 </span>
@@ -334,6 +342,7 @@ grid-template-columns:repeat(4,1fr)
 <a class="back" href="./">
 トップへ戻る
 </a>
+
 </header>
 
 <main>
@@ -381,7 +390,7 @@ grid-template-columns:repeat(4,1fr)
 
 <script>
 const GAS_URL=
-"https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
+"https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec";
 
 const params=
 new URLSearchParams(location.search);
@@ -414,19 +423,25 @@ q.toString();
 const timer=
 setTimeout(function(){
 cleanup();
-reject(new Error("通信がタイムアウトしました。"));
+reject(
+new Error("通信がタイムアウトしました。")
+);
 },20000);
 
-window[name]=function(data){
+window[name]=
+function(data){
 clearTimeout(timer);
 cleanup();
 resolve(data);
 };
 
-script.onerror=function(){
+script.onerror=
+function(){
 clearTimeout(timer);
 cleanup();
-reject(new Error("GASに接続できませんでした。"));
+reject(
+new Error("GASに接続できませんでした。")
+);
 };
 
 function cleanup(){
