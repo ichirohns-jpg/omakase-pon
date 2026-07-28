@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>月別アーカイブ｜ふじこの志木案内〜ぽん</title>
+<link rel="icon" href="fujiko.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="fujiko.jpg">
+
+<style>
+:root{
+--water:#0f766e;
+--deep:#075e59;
+--light:#e9faf5;
+--pink:#d72d79;
+--yellow:#facc15;
+--ink:#24443d;
+--muted:#637973;
+--line:#d5eee5;
+--shadow:0 8px 24px rgba(17,94,89,.13);
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+padding-bottom:80px;
+color:var(--ink);
+background:linear-gradient(180deg,#e9faf5,#fffdf7 60%,#fff4fa);
+font-family:"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+font-size:17px;
+line-height:1.7;
+}
+
+a{color:inherit}
+
+.page{
+width:min(100%,760px);
+min-height:100vh;
+margin:auto;
+background:#fffdf9ee;
+box-shadow:0 0 30px #115e5914;
+}
+
+.header{
+position:sticky;
+top:0;
+z-index:10;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+background:rgba(7,94,89,.98);
+border-bottom:3px solid #8ed8bc;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:9px;
+color:#fff;
+text-decoration:none;
+font-weight:900;
+}
+
+.brand img{
+width:48px;
+height:48px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid #fff;
+}
+
+.brand span{
+font-size:17px;
+line-height:1.2;
+}
+
+.header a:last-child{
+padding:9px 11px;
+border-radius:13px;
+background:#d7f7eb;
+color:var(--deep);
+font-size:13px;
+font-weight:900;
+text-decoration:none;
+}
+
+main{padding:14px}
+
+.hero{
+padding:25px 18px;
+border-radius:23px;
+background:linear-gradient(135deg,#0f766e,#4d8b55);
+color:#fff;
+box-shadow:var(--shadow);
+}
+
+.hero h1{
+margin:0;
+font-size:clamp(28px,7vw,43px);
+line-height:1.2;
+}
+
+.hero p{
+margin:8px 0 0;
+font-weight:800;
+}
+
+.card{
+margin-top:15px;
+padding:18px 15px;
+background:#fff;
+border:1px solid var(--line);
+border-radius:23px;
+box-shadow:var(--shadow);
+}
+
+h2{
+margin:0;
+color:var(--deep);
+font-size:clamp(24px,6vw,34px);
+line-height:1.25;
+}
+
+.lead{
+margin:6px 0 0;
+color:var(--muted);
+font-weight:700;
+}
+
+.archives{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:9px;
+margin-top:14px;
+}
+
+.archives a{
+padding:14px 8px;
+border-radius:17px;
+background:var(--light);
+border:1px solid var(--line);
+color:var(--deep);
+text-align:center;
+font-weight:900;
+text-decoration:none;
+}
+
+.archives a.active{
+background:#fff2a6;
+border-color:var(--yellow);
+}
+
+.archives small{
+display:block;
+color:var(--muted);
+font-size:12px;
+}
+
+.status{
+margin-top:12px;
+padding:10px 12px;
+border-radius:14px;
+background:#effbf7;
+color:var(--deep);
+font-weight:800;
+}
+
+.status.error{
+background:#fff0f3;
+color:#a51d4c;
+}
+
+.articles{
+display:grid;
+gap:14px;
+margin-top:14px;
+}
+
+.article{
+overflow:hidden;
+border:1px solid var(--line);
+border-radius:20px;
+background:#fff;
+}
+
+.articleHead{
+padding:14px 15px 7px;
+}
+
+.date{
+color:var(--pink);
+font-size:12px;
+font-weight:900;
+}
+
+.article h3{
+margin:3px 0 0;
+color:var(--deep);
+font-size:22px;
+line-height:1.3;
+}
+
+.tags{
+display:flex;
+flex-wrap:wrap;
+gap:5px;
+margin-top:7px;
+}
+
+.tag{
+padding:3px 8px;
+border-radius:999px;
+background:#eef9d8;
+color:#4e7024;
+font-size:11px;
+font-weight:900;
+}
+
+.body{
+padding:0 15px;
+color:var(--muted);
+font-weight:700;
+white-space:pre-line;
+}
+
+.media{
+margin-top:12px;
+background:#073f3b;
+}
+
+.media iframe{
+display:block;
+width:100%;
+aspect-ratio:16/9;
+border:0;
+}
+
+.slider{
+display:flex;
+overflow-x:auto;
+scroll-snap-type:x mandatory;
+scrollbar-width:none;
+}
+
+.slider::-webkit-scrollbar{display:none}
+
+.slider img{
+flex:0 0 100%;
+width:100%;
+aspect-ratio:16/10;
+object-fit:cover;
+scroll-snap-align:start;
+}
+
+.slideHint{
+padding:6px;
+background:var(--light);
+color:var(--deep);
+text-align:center;
+font-size:12px;
+font-weight:900;
+}
+
+.location{
+margin:12px 15px 0;
+padding:11px;
+border-radius:14px;
+background:#fff9df;
+border:1px solid #f1d67d;
+color:#73510a;
+font-weight:900;
+}
+
+.location a{
+display:block;
+margin-top:5px;
+color:#8d5d00;
+}
+
+.open{
+display:block;
+margin:14px 15px;
+padding:11px;
+border-radius:999px;
+background:var(--light);
+border:1px solid var(--line);
+color:var(--deep);
+text-align:center;
+text-decoration:none;
+font-weight:900;
+}
+
+.empty{
+padding:20px;
+border-radius:15px;
+background:#f8fbfa;
+color:var(--muted);
+text-align:center;
+font-weight:800;
+}
+
+.footer{
+padding:0 14px 20px;
+color:var(--muted);
+text-align:center;
+font-size:13px;
+font-weight:800;
+}
+
+.bottom{
+position:fixed;
+z-index:20;
+left:0;
+right:0;
+bottom:0;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+padding-bottom:env(safe-area-inset-bottom);
+background:#fffffff5;
+border-top:1px solid var(--line);
+box-shadow:0 -7px 20px #115e591b;
+}
+
+.bottom a{
+padding:7px 3px;
+color:var(--deep);
+text-align:center;
+font-size:11px;
+font-weight:900;
+text-decoration:none;
+}
+
+.bottom span{
+display:block;
+font-size:19px;
+line-height:1.1;
+}
+
+@media(min-width:680px){
+.archives{grid-template-columns:repeat(4,1fr)}
+.articles{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<header class="header">
+<a class="brand" href="./">
+<img src="fujiko.jpg" alt="ふじこ">
+<span>ふじこの<br>志木案内〜ぽん</span>
+</a>
+
+<a href="./">トップへ戻る</a>
+</header>
+
+<main>
+
+<section class="hero">
+<h1>月別アーカイブ</h1>
+<p>ふじこの志木案内〜ぽんの記事を月ごとに見られます。</p>
+</section>
+
+<section class="card">
+<h2>月を選ぶ</h2>
+<p class="lead">読みたい月をタップしてください。</p>
+<div id="archiveList" class="archives"></div>
+</section>
+
+<section class="card">
+<h2 id="articleHeading">月を選んでください</h2>
+<div id="status" class="status">記事を読み込んでいます……</div>
+<div id="articleList" class="articles"></div>
+</section>
+
+</main>
+
+<footer class="footer">
+ふじこの志木案内〜ぽん<br>
+志木のことなら〜ふじこにおまかせ❣️
+</footer>
+
+</div>
+
+<nav class="bottom">
+<a href="./"><span>🏠</span>トップ</a>
+<a href="./#articles"><span>📖</span>記事</a>
+<a href="archive.html"><span>🗓️</span>月別</a>
+<a href="./#messages"><span>💌</span>応援</a>
+</nav>
+
+<script>
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbxg6C9SdTssH5fR7TTlB6jy0Jw_nPcvYYYVV2_vnsG0o-S5PXcvFN3nLhT1uYnz_BdkGg/exec";
+
+const SITE_URL =
+"https://ichirohns-jpg.github.io/omakase-pon/";
+
+const params =
+new URLSearchParams(location.search);
+
+const selectedMonth =
+params.get("month") || "";
+
+function jsonp(p){
+return new Promise(function(resolve,reject){
+
+const name =
+"archive_" +
+Date.now() +
+"_" +
+Math.floor(Math.random()*10000);
+
+const script =
+document.createElement("script");
+
+const query =
+new URLSearchParams(p);
+
+query.set("callback",name);
+
+script.src =
+GAS_URL +
+"?" +
+query.toString();
+
+const timer =
+setTimeout(function(){
+cleanup();
+reject(new Error("通信がタイムアウトしました。"));
+},20000);
+
+window[name] =
+function(data){
+clearTimeout(timer);
+cleanup();
+resolve(data);
+};
+
+script.onerror =
+function(){
+clearTimeout(timer);
+cleanup();
+reject(new Error("GASに接続できませんでした。"));
+};
+
+function cleanup(){
+delete window[name];
+
+if(script.parentNode){
+script.parentNode.removeChild(script);
+}
+}
+
+document.body.appendChild(script);
+});
+}
+
+function esc(value){
+return String(value==null?"":value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+
+function br(value){
+return esc(value).replace(/\n/g,"<br>");
+}
+
+function safeUrl(value){
+const text =
+String(value||"").trim();
+
+return /^https?:\/\//i.test(text)
+?text
+:"";
+}
+
+function media(article){
+
+if(
+article.format==="YouTube" &&
+safeUrl(article.youtubeEmbedUrl)
+){
+return `
+<div class="media">
+<iframe
+src="${esc(article.youtubeEmbedUrl)}?rel=0&modestbranding=1"
+title="${esc(article.theme)}"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+allowfullscreen>
+</iframe>
+</div>
+`;
+}
+
+const images =
+Array.isArray(article.images)
+?article.images.map(safeUrl).filter(Boolean).slice(0,5)
+:[];
+
+if(!images.length){
+return "";
+}
+
+return `
+<div class="media">
+<div class="slider">
+${images.map(function(src,index){
+return `
+<img
+src="${esc(src)}"
+alt="${esc(article.theme)} ${index+1}枚目"
+loading="lazy">
+`;
+}).join("")}
+</div>
+
+<div class="slideHint">
+画像を横にスライドできます（${images.length}枚）
+</div>
+</div>
+`;
+}
+
+function articleCard(article){
+
+const categories =
+Array.isArray(article.categories)
+?article.categories
+:[];
+
+const map =
+article.hasMap &&
+safeUrl(article.mapUrl)
+?
+`
+<div class="location">
+📍 ${esc(article.placeName||"場所案内")}
+<a
+href="${esc(article.mapUrl)}"
+target="_blank"
+rel="noopener">
+Googleマップで場所を見る
+</a>
+</div>
+`
+:"";
+
+const articleUrl =
+SITE_URL +
+"?id=" +
+encodeURIComponent(article.articleId);
+
+return `
+<article class="article">
+
+<div class="articleHead">
+<div class="date">
+${esc(article.date||"")}
+</div>
+
+<h3>
+${esc(article.theme||"無題の記事")}
+</h3>
+
+<div class="tags">
+${categories.map(function(category){
+return `
+<span class="tag">
+${esc(category)}
+</span>
+`;
+}).join("")}
+
+<span class="tag">
+${esc(article.format||"記事")}
+</span>
+</div>
+</div>
+
+<div class="body">
+${br(article.content||"")}
+</div>
+
+${media(article)}
+${map}
+
+<a class="open" href="${articleUrl}">
+この記事を開く
+</a>
+
+</article>
+`;
+}
+
+function renderArchives(archives){
+
+const target =
+document.getElementById(
+"archiveList"
+);
+
+if(
+!archives ||
+!archives.length
+){
+
+target.innerHTML =
+`
+<div class="empty">
+公開記事が増えると、月別一覧が表示されます。
+</div>
+`;
+
+return;
+}
+
+target.innerHTML =
+archives.map(function(archive){
+
+const url =
+new URL(
+"archive.html",
+location.href
+);
+
+url.searchParams.set(
+"month",
+archive.month
+);
+
+return `
+<a
+class="${selectedMonth===archive.month?"active":""}"
+href="${url.href}">
+${esc(archive.label)}
+<small>${archive.count}件の記事</small>
+</a>
+`;
+
+}).join("");
+}
+
+async function load(){
+
+const status =
+document.getElementById(
+"status"
+);
+
+const list =
+document.getElementById(
+"articleList"
+);
+
+const heading =
+document.getElementById(
+"articleHeading"
+);
+
+try{
+
+const data =
+await jsonp({
+mode:"articles"
+});
+
+if(!data.ok){
+throw new Error(
+data.error ||
+"記事を取得できませんでした。"
+);
+}
+
+renderArchives(
+data.archives||[]
+);
+
+let articles =
+Array.isArray(data.articles)
+?data.articles
+:[];
+
+if(selectedMonth){
+
+articles =
+articles.filter(function(article){
+return article.month===
+selectedMonth;
+});
+
+heading.textContent =
+selectedMonth.replace(
+"-",
+"年"
+) +
+"月の記事";
+
+}else{
+
+heading.textContent =
+"月を選んでください";
+
+articles=[];
+}
+
+if(!articles.length){
+
+list.innerHTML =
+`
+<div class="empty">
+表示する記事はありません。
+</div>
+`;
+
+}else{
+
+list.innerHTML =
+articles.map(articleCard).join("");
+}
+
+status.hidden=true;
+
+}catch(error){
+
+status.textContent =
+error.message;
+
+status.classList.add(
+"error"
+);
+}
+}
+
+load();
+</script>
+
+</body>
+</html>
