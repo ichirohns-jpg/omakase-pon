@@ -430,7 +430,7 @@ return new Promise(function(resolve,reject){
 const name=
 "article_"+
 Date.now()+
-"_"+
+"_"+ 
 Math.floor(Math.random()*10000);
 
 const script=
@@ -520,9 +520,7 @@ s.match(
 );
 
 if(m){
-return
-"https://www.youtube.com/embed/"+
-m[1]
+return "https://www.youtube.com/embed/"+m[1]
 }
 
 m=
@@ -531,9 +529,7 @@ s.match(
 );
 
 if(m){
-return
-"https://www.youtube.com/embed/"+
-m[1]
+return "https://www.youtube.com/embed/"+m[1]
 }
 
 m=
@@ -693,8 +689,7 @@ embed.indexOf("?")>=0
 :
 "?";
 
-return
-'<div class="media">'+
+return '<div class="media">'+
 '<iframe src="'+
 esc(
 embed+
@@ -721,13 +716,11 @@ if(!images.length){
 return "";
 }
 
-return
-'<div class="media">'+
+return '<div class="media">'+
 '<div class="slider">'+
 images.map(function(src,index){
 
-return
-'<img src="'+
+return '<img src="'+
 esc(src)+
 '" alt="'+
 esc(article.theme||"記事")+
@@ -818,8 +811,7 @@ esc(article.theme||"無題の記事")+
 
 categories.map(function(category){
 
-return
-'<span class="tag">'+
+return '<span class="tag">'+
 esc(category)+
 "</span>"
 
