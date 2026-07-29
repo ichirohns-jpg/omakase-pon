@@ -379,7 +379,6 @@ line-height:1.05
 <span class="brandTitle">
 ふじこの<br>
 志木案内〜ぽん
-
 <span class="brandSub">
 志木のことなら〜ふじこにおまかせ❣️
 </span>
@@ -421,36 +420,57 @@ const CHANNEL_URL="https://www.youtube.com/@shikiconcierge";
 
 const TOP_IMAGE="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg";
 
-const articleId=new URLSearchParams(location.search).get("id")||"";
+const articleId=
+new URLSearchParams(location.search).get("id")||"";
+
 
 function jsonp(params){
 return new Promise(function(resolve,reject){
 
-const name="article_"+Date.now()+"_"+Math.floor(Math.random()*10000);
+const name=
+"article_"+
+Date.now()+
+"_"+
+Math.floor(Math.random()*10000);
 
-const script=document.createElement("script");
+const script=
+document.createElement("script");
 
-const q=new URLSearchParams(params);
+const q=
+new URLSearchParams(params);
 
 q.set("callback",name);
 
-script.src=GAS_URL+"?"+q.toString();
+script.src=
+GAS_URL+
+"?"+
+q.toString();
 
-const timer=setTimeout(function(){
+const timer=
+setTimeout(function(){
 cleanup();
-reject(new Error("通信がタイムアウトしました。"));
+
+reject(
+new Error("通信がタイムアウトしました。")
+);
+
 },20000);
 
-window[name]=function(data){
+window[name]=
+function(data){
 clearTimeout(timer);
 cleanup();
 resolve(data)
 };
 
-script.onerror=function(){
+script.onerror=
+function(){
 clearTimeout(timer);
 cleanup();
-reject(new Error("GASに接続できませんでした。"))
+
+reject(
+new Error("GASに接続できませんでした。")
+)
 };
 
 function cleanup(){
@@ -465,6 +485,7 @@ document.body.appendChild(script)
 })
 }
 
+
 function esc(v){
 return String(v==null?"":v)
 .replace(/&/g,"&amp;")
@@ -474,40 +495,64 @@ return String(v==null?"":v)
 .replace(/'/g,"&#039;")
 }
 
+
 function safeUrl(v){
-const s=String(v||"").trim();
+const s=
+String(v||"").trim();
 
 return /^https?:\/\//i.test(s)
 ?s
 :""
 }
 
+
 function youtubeEmbed(v){
-const s=String(v||"").trim();
+const s=
+String(v||"").trim();
 
-if(!s)return "";
-
-let m=s.match(/youtube\.com\/embed\/([^?&/]+)/i);
-
-if(m){
-return "https://www.youtube.com/embed/"+m[1]
+if(!s){
+return "";
 }
 
-m=s.match(/youtu\.be\/([^?&/]+)/i);
+let m=
+s.match(
+/youtube\.com\/embed\/([^?&/]+)/i
+);
 
 if(m){
-return "https://www.youtube.com/embed/"+m[1]
+return
+"https://www.youtube.com/embed/"+
+m[1]
 }
 
-m=s.match(/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i);
+m=
+s.match(
+/youtu\.be\/([^?&/]+)/i
+);
+
+if(m){
+return
+"https://www.youtube.com/embed/"+
+m[1]
+}
+
+m=
+s.match(
+/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i
+);
 
 return m
-?"https://www.youtube.com/embed/"+m[1]
-:""
+?
+"https://www.youtube.com/embed/"+
+m[1]
+:
+""
 }
 
+
 function detailUrl(){
-const u=new URL(
+const u=
+new URL(
 "article.html",
 location.href
 );
@@ -520,41 +565,67 @@ articleId
 return u.href
 }
 
-function sharePageUrl(){
+
+function sharePageUrl(article){
+const fromGas=
+article&&
+String(article.shareUrl||"").trim();
+
+if(
+/^https:\/\/script\.google\.com\/macros\/s\//i.test(fromGas)&&
+fromGas.indexOf("mode=share")>=0
+){
+return fromGas
+}
+
 return detailUrl()
 }
 
+
 function setMeta(selector,value){
-const node=document.querySelector(selector);
+const node=
+document.querySelector(selector);
 
 if(node){
-node.setAttribute("content",value)
+node.setAttribute(
+"content",
+value
+)
 }
 }
+
 
 function setArticleMeta(article){
 
-const title=(article.theme||"記事")+
+const title=
+(article.theme||"記事")+
 "｜ふじこの志木案内〜ぽん";
 
-const description=String(
+const description=
+String(
 article.content||
 "志木のことなら〜ふじこにおまかせ❣️"
 )
 .replace(/\s+/g," ")
 .slice(0,120);
 
-const images=Array.isArray(article.images)
-?article.images.map(safeUrl).filter(Boolean)
-:[];
+const images=
+Array.isArray(article.images)
+?
+article.images.map(safeUrl).filter(Boolean)
+:
+[];
 
-const image=safeUrl(article.ogImage)||
+const image=
+safeUrl(article.ogImage)||
 images[0]||
 TOP_IMAGE;
 
-const url=detailUrl();
+const url=
+detailUrl();
 
-document.title=title;
+document.title=
+title;
 
 setMeta(
 'meta[name="description"]',
@@ -597,43 +668,54 @@ image
 )
 }
 
+
 function media(article){
 
-const embed=youtubeEmbed(
+const embed=
+youtubeEmbed(
 article.youtubeEmbedUrl||
 article.youtubeUrl
 );
 
-const format=String(
-article.format||""
-).toLowerCase();
+const format=
+String(article.format||"")
+.toLowerCase();
 
 if(
 format.indexOf("youtube")>=0&&
 embed
 ){
 
-const joiner=embed.indexOf("?")>=0
-?"&"
-:"?";
+const joiner=
+embed.indexOf("?")>=0
+?
+"&"
+:
+"?";
 
 return
 '<div class="media">'+
 '<iframe src="'+
-esc(embed+joiner+
-"rel=0&modestbranding=1")+
+esc(
+embed+
+joiner+
+"rel=0&modestbranding=1"
+)+
 '" title="'+
-esc(article.theme||
-"YouTube動画")+
+esc(article.theme||"YouTube動画")+
 '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'+
-'</div>'
+"</div>"
 }
 
-const images=Array.isArray(article.images)
-?article.images.map(safeUrl)
+const images=
+Array.isArray(article.images)
+?
+article.images
+.map(safeUrl)
 .filter(Boolean)
 .slice(0,5)
-:[];
+:
+[];
 
 if(!images.length){
 return "";
@@ -648,24 +730,25 @@ return
 '<img src="'+
 esc(src)+
 '" alt="'+
-esc(article.theme||
-"記事")+
+esc(article.theme||"記事")+
 " "+
 (index+1)+
 '枚目" loading="lazy">'
 
 }).join("")+
-'</div>'+
+"</div>"+
 '<div class="slideHint">'+
-'画像を横にスライドできます（'+
+"画像を横にスライドできます（"+
 images.length+
-'枚）</div>'+
-'</div>'
+"枚）</div>"+
+"</div>"
 }
+
 
 function render(article){
 
-window.currentArticle=article;
+window.currentArticle=
+article;
 
 if(!article){
 
@@ -679,16 +762,20 @@ return
 
 setArticleMeta(article);
 
-const categories=Array.isArray(
+const categories=
+Array.isArray(article.categories)
+?
 article.categories
-)
-?article.categories
-:[];
+:
+[];
 
-const shareUrl=sharePageUrl();
+const shareUrl=
+sharePageUrl(article);
 
 const encodedUrl=
-encodeURIComponent(shareUrl);
+encodeURIComponent(
+shareUrl
+);
 
 const encodedText=
 encodeURIComponent(
@@ -696,21 +783,25 @@ encodeURIComponent(
 "｜ふじこの志木案内〜ぽん"
 );
 
-const mapUrl=article.hasMap
-?safeUrl(article.mapUrl)
-:"";
+const mapUrl=
+article.hasMap
+?
+safeUrl(article.mapUrl)
+:
+"";
 
-const map=mapUrl
+const map=
+mapUrl
 ?
 '<div class="location">📍 '+
-esc(article.placeName||
-"場所案内")+
+esc(article.placeName||"場所案内")+
 '<a href="'+
 esc(mapUrl)+
 '" target="_blank" rel="noopener">'+
 "Googleマップで場所を見る"+
 "</a></div>"
-:"";
+:
+"";
 
 document.getElementById(
 "articleBox"
@@ -721,8 +812,7 @@ document.getElementById(
 esc(article.date||"")+
 "</div>"+
 "<h1>"+
-esc(article.theme||
-"無題の記事")+
+esc(article.theme||"無題の記事")+
 "</h1>"+
 '<div class="tags">'+
 
@@ -736,8 +826,7 @@ esc(category)+
 }).join("")+
 
 '<span class="tag">'+
-esc(article.format||
-"記事")+
+esc(article.format||"記事")+
 "</span>"+
 "</div>"+
 "</div>"+
@@ -789,9 +878,13 @@ encodedUrl+
 "</div>"
 }
 
+
 async function copyUrl(){
 
-const url=sharePageUrl();
+const url=
+sharePageUrl(
+window.currentArticle
+);
 
 try{
 
@@ -810,6 +903,7 @@ url
 }
 }
 
+
 async function instagram(){
 
 await copyUrl();
@@ -820,6 +914,7 @@ window.open(
 "noopener"
 )
 }
+
 
 async function load(){
 
@@ -835,21 +930,29 @@ return
 
 try{
 
-const data=await jsonp({
+const data=
+await jsonp({
 mode:"article",
 id:articleId
 });
 
-if(!data||!data.ok){
+if(
+!data||
+!data.ok
+){
 
 throw new Error(
-data&&data.error?
-data.error:
+data&&data.error
+?
+data.error
+:
 "記事を取得できませんでした。"
 );
 }
 
-render(data.article)
+render(
+data.article
+)
 
 }catch(error){
 
