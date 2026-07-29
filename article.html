@@ -9,8 +9,12 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ふじこの志木案内〜ぽん">
 <meta property="og:description" content="志木のことなら〜ふじこにおまかせ❣️">
+<meta property="og:url" content="https://ichirohns-jpg.github.io/omakase-pon/article.html">
 <meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ふじこの志木案内〜ぽん">
+<meta name="twitter:description" content="志木のことなら〜ふじこにおまかせ❣️">
+<meta name="twitter:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
 <link rel="icon" href="fujiko.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="fujiko.jpg">
 
@@ -20,7 +24,6 @@
 --pinkDark:#bd246d;
 --pinkSoft:#fff0f7;
 --pinkLine:#f5bdd8;
---water:#e9f9fb;
 --green:#28796c;
 --ink:#3b3942;
 --muted:#70717a;
@@ -144,7 +147,8 @@ h1{
 margin:5px 0 0;
 color:var(--green);
 font-size:clamp(29px,8vw,44px);
-line-height:1.3
+line-height:1.3;
+overflow-wrap:anywhere
 }
 
 .tags{
@@ -262,6 +266,13 @@ margin:0;
 color:var(--pinkDark);
 font-size:20px;
 font-weight:900
+}
+
+.shareNote{
+margin:3px 0 0;
+color:var(--muted);
+font-size:13px;
+font-weight:700
 }
 
 .share{
@@ -404,58 +415,42 @@ line-height:1.05
 </nav>
 
 <script>
-const GAS_URL=
-"https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec";
+const GAS_URL="https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec";
 
-const CHANNEL_URL=
-"https://www.youtube.com/@shikiconcierge";
+const CHANNEL_URL="https://www.youtube.com/@shikiconcierge";
 
-const articleId=
-new URLSearchParams(location.search).get("id")||"";
+const TOP_IMAGE="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg";
+
+const articleId=new URLSearchParams(location.search).get("id")||"";
 
 function jsonp(params){
 return new Promise(function(resolve,reject){
 
-const name=
-"article_"+
-Date.now()+
-"_"+Math.floor(Math.random()*10000);
+const name="article_"+Date.now()+"_"+Math.floor(Math.random()*10000);
 
-const script=
-document.createElement("script");
+const script=document.createElement("script");
 
-const q=
-new URLSearchParams(params);
+const q=new URLSearchParams(params);
 
 q.set("callback",name);
 
-script.src=
-GAS_URL+
-"?"+
-q.toString();
+script.src=GAS_URL+"?"+q.toString();
 
-const timer=
-setTimeout(function(){
+const timer=setTimeout(function(){
 cleanup();
-reject(
-new Error("通信がタイムアウトしました。")
-);
+reject(new Error("通信がタイムアウトしました。"));
 },20000);
 
-window[name]=
-function(data){
+window[name]=function(data){
 clearTimeout(timer);
 cleanup();
 resolve(data)
 };
 
-script.onerror=
-function(){
+script.onerror=function(){
 clearTimeout(timer);
 cleanup();
-reject(
-new Error("GASに接続できませんでした。")
-)
+reject(new Error("GASに接続できませんでした。"))
 };
 
 function cleanup(){
@@ -480,8 +475,7 @@ return String(v==null?"":v)
 }
 
 function safeUrl(v){
-const s=
-String(v||"").trim();
+const s=String(v||"").trim();
 
 return /^https?:\/\//i.test(s)
 ?s
@@ -489,30 +483,23 @@ return /^https?:\/\//i.test(s)
 }
 
 function youtubeEmbed(v){
-const s=
-String(v||"").trim();
+const s=String(v||"").trim();
 
 if(!s)return "";
 
-if(/youtube\.com\/embed\//i.test(s)){
-return s
-}
-
-let m=
-s.match(
-/youtu\.be\/([^?&/]+)/i
-);
+let m=s.match(/youtube\.com\/embed\/([^?&/]+)/i);
 
 if(m){
-return
-"https://www.youtube.com/embed/"+
-m[1]
+return "https://www.youtube.com/embed/"+m[1]
 }
 
-m=
-s.match(
-/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i
-);
+m=s.match(/youtu\.be\/([^?&/]+)/i);
+
+if(m){
+return "https://www.youtube.com/embed/"+m[1]
+}
+
+m=s.match(/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i);
 
 return m
 ?"https://www.youtube.com/embed/"+m[1]
@@ -520,8 +507,7 @@ return m
 }
 
 function detailUrl(){
-const u=
-new URL(
+const u=new URL(
 "article.html",
 location.href
 );
@@ -534,49 +520,117 @@ articleId
 return u.href
 }
 
-function sharePageUrl(article){
-const fromGas=
-article&&String(
-article.shareUrl||""
-).trim();
-
-if(fromGas){
-return fromGas
+function sharePageUrl(){
+return detailUrl()
 }
 
-return GAS_URL+
-"?mode=share&id="+
-encodeURIComponent(articleId)
+function setMeta(selector,value){
+const node=document.querySelector(selector);
+
+if(node){
+node.setAttribute("content",value)
+}
+}
+
+function setArticleMeta(article){
+
+const title=(article.theme||"記事")+
+"｜ふじこの志木案内〜ぽん";
+
+const description=String(
+article.content||
+"志木のことなら〜ふじこにおまかせ❣️"
+)
+.replace(/\s+/g," ")
+.slice(0,120);
+
+const images=Array.isArray(article.images)
+?article.images.map(safeUrl).filter(Boolean)
+:[];
+
+const image=safeUrl(article.ogImage)||
+images[0]||
+TOP_IMAGE;
+
+const url=detailUrl();
+
+document.title=title;
+
+setMeta(
+'meta[name="description"]',
+description
+);
+
+setMeta(
+'meta[property="og:title"]',
+title
+);
+
+setMeta(
+'meta[property="og:description"]',
+description
+);
+
+setMeta(
+'meta[property="og:url"]',
+url
+);
+
+setMeta(
+'meta[property="og:image"]',
+image
+);
+
+setMeta(
+'meta[name="twitter:title"]',
+title
+);
+
+setMeta(
+'meta[name="twitter:description"]',
+description
+);
+
+setMeta(
+'meta[name="twitter:image"]',
+image
+)
 }
 
 function media(article){
 
-const embed=
-youtubeEmbed(
+const embed=youtubeEmbed(
 article.youtubeEmbedUrl||
 article.youtubeUrl
 );
 
+const format=String(
+article.format||""
+).toLowerCase();
+
 if(
-article.format==="YouTube"&&
+format.indexOf("youtube")>=0&&
 embed
 ){
+
+const joiner=embed.indexOf("?")>=0
+?"&"
+:"?";
 
 return
 '<div class="media">'+
 '<iframe src="'+
-esc(embed)+
-'?rel=0&modestbranding=1" '+
-'title="'+
-esc(article.theme)+
+esc(embed+joiner+
+"rel=0&modestbranding=1")+
+'" title="'+
+esc(article.theme||
+"YouTube動画")+
 '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'+
 '</div>'
 }
 
-const images=
-Array.isArray(article.images)
-?article.images
-.map(safeUrl)
+const images=Array.isArray(article.images)
+?article.images.map(safeUrl)
 .filter(Boolean)
 .slice(0,5)
 :[];
@@ -594,7 +648,8 @@ return
 '<img src="'+
 esc(src)+
 '" alt="'+
-esc(article.theme)+
+esc(article.theme||
+"記事")+
 " "+
 (index+1)+
 '枚目" loading="lazy">'
@@ -610,8 +665,7 @@ images.length+
 
 function render(article){
 
-window.currentArticle=
-article;
+window.currentArticle=article;
 
 if(!article){
 
@@ -623,13 +677,15 @@ document.getElementById(
 return
 }
 
-const categories=
-Array.isArray(article.categories)
+setArticleMeta(article);
+
+const categories=Array.isArray(
+article.categories
+)
 ?article.categories
 :[];
 
-const shareUrl=
-sharePageUrl(article);
+const shareUrl=sharePageUrl();
 
 const encodedUrl=
 encodeURIComponent(shareUrl);
@@ -640,21 +696,21 @@ encodeURIComponent(
 "｜ふじこの志木案内〜ぽん"
 );
 
-const map=
-article.hasMap&&
-safeUrl(article.mapUrl)
-?
-'<div class="location">📍 '+
-esc(article.placeName||"場所案内")+
-'<a href="'+
-esc(article.mapUrl)+
-'" target="_blank" rel="noopener">'+
-'Googleマップで場所を見る</a></div>'
+const mapUrl=article.hasMap
+?safeUrl(article.mapUrl)
 :"";
 
-document.title=
-(article.theme||"記事")+
-"｜ふじこの志木案内〜ぽん";
+const map=mapUrl
+?
+'<div class="location">📍 '+
+esc(article.placeName||
+"場所案内")+
+'<a href="'+
+esc(mapUrl)+
+'" target="_blank" rel="noopener">'+
+"Googleマップで場所を見る"+
+"</a></div>"
+:"";
 
 document.getElementById(
 "articleBox"
@@ -663,60 +719,65 @@ document.getElementById(
 '<div class="articleHead">'+
 '<div class="date">'+
 esc(article.date||"")+
-'</div>'+
-'<h1>'+
-esc(article.theme||"無題の記事")+
-'</h1>'+
+"</div>"+
+"<h1>"+
+esc(article.theme||
+"無題の記事")+
+"</h1>"+
 '<div class="tags">'+
 
 categories.map(function(category){
+
 return
 '<span class="tag">'+
 esc(category)+
-'</span>'
+"</span>"
+
 }).join("")+
 
 '<span class="tag">'+
-esc(article.format||"記事")+
-'</span>'+
-'</div>'+
-'</div>'+
+esc(article.format||
+"記事")+
+"</span>"+
+"</div>"+
+"</div>"+
 
 '<div class="content">'+
 esc(article.content||"")+
-'</div>'+
+"</div>"+
 
 media(article)+
 map+
 
 '<div class="support">'+
-'ふじこと志木お助け隊の活動を応援してください❣️'+
-'</div>'+
+"ふじこと志木お助け隊の活動を応援してください❣️"+
+"</div>"+
 
 '<a class="subscribe" href="'+
 CHANNEL_URL+
 '" target="_blank" rel="noopener">'+
-'📺 YouTubeチャンネルを登録する'+
-'</a>'+
+"📺 YouTubeチャンネルを登録する"+
+"</a>"+
 
 '<div class="shareBox">'+
 '<p class="shareTitle">この記事をみんなに知らせる</p>'+
+'<p class="shareNote">このページのURLを共有します。</p>'+
 '<div class="share">'+
 
 '<a class="fb" href="'+
-'https://www.facebook.com/sharer/sharer.php?u='+
+"https://www.facebook.com/sharer/sharer.php?u="+
 encodedUrl+
 '" target="_blank" rel="noopener">Facebook</a>'+
 
 '<a class="x" href="'+
-'https://twitter.com/intent/tweet?url='+
+"https://twitter.com/intent/tweet?url="+
 encodedUrl+
-'&text='+
+"&text="+
 encodedText+
 '" target="_blank" rel="noopener">X</a>'+
 
 '<a class="line" href="'+
-'https://social-plugins.line.me/lineit/share?url='+
+"https://social-plugins.line.me/lineit/share?url="+
 encodedUrl+
 '" target="_blank" rel="noopener">LINE</a>'+
 
@@ -724,19 +785,17 @@ encodedUrl+
 
 '<button class="insta" onclick="instagram()">Instagram</button>'+
 
-'</div>'+
-'</div>'
+"</div>"+
+"</div>"
 }
 
 async function copyUrl(){
 
+const url=sharePageUrl();
+
 try{
 
-await navigator.clipboard.writeText(
-sharePageUrl(
-window.currentArticle
-)
-);
+await navigator.clipboard.writeText(url);
 
 alert(
 "記事URLをコピーしました。"
@@ -746,9 +805,7 @@ alert(
 
 prompt(
 "リンクをコピーしてください",
-sharePageUrl(
-window.currentArticle
-)
+url
 )
 }
 }
@@ -778,15 +835,16 @@ return
 
 try{
 
-const data=
-await jsonp({
+const data=await jsonp({
 mode:"article",
 id:articleId
 });
 
-if(!data.ok){
+if(!data||!data.ok){
+
 throw new Error(
-data.error||
+data&&data.error?
+data.error:
 "記事を取得できませんでした。"
 );
 }
@@ -800,7 +858,7 @@ document.getElementById(
 ).innerHTML=
 '<div class="empty">'+
 esc(error.message)+
-'</div>'
+"</div>"
 }
 }
 
