@@ -430,7 +430,7 @@ return new Promise(function(resolve,reject){
 const name=
 "article_"+
 Date.now()+
-"_"+ 
+"_"+
 Math.floor(Math.random()*10000);
 
 const script=
@@ -563,18 +563,24 @@ return u.href
 
 
 function sharePageUrl(article){
-const fromGas=
-article&&
-String(article.shareUrl||"").trim();
+const id=
+String(
+article&&article.articleId||
+articleId||
+""
+).trim();
 
-if(
-/^https:\/\/script\.google\.com\/macros\/s\//i.test(fromGas)&&
-fromGas.indexOf("mode=share")>=0
-){
-return fromGas
+if(!id){
+return detailUrl()
 }
 
-return detailUrl()
+const u=
+new URL(
+"share-"+id+".html",
+location.href
+);
+
+return u.href
 }
 
 
