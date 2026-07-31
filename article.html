@@ -232,6 +232,51 @@ margin-top:5px;
 color:#8b6810
 }
 
+.sourceLinks{
+margin:20px 18px 0;
+padding:18px;
+border:1px solid var(--pinkLine);
+border-radius:20px;
+background:#fff8fc
+}
+
+.sourceLinksTitle{
+margin:0;
+color:var(--pinkDark);
+font-size:20px;
+font-weight:900
+}
+
+.sourceLinksNote{
+margin:3px 0 0;
+color:var(--muted);
+font-size:13px;
+font-weight:700
+}
+
+.sourceLinksList{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:12px
+}
+
+.sourceLink{
+display:inline-block;
+padding:10px 13px;
+border-radius:999px;
+color:#7c2455;
+background:#fce4f1;
+text-decoration:none;
+font-size:15px;
+font-weight:900
+}
+
+.sourceLink.youtubeSource{
+color:#fff;
+background:#e62117
+}
+
 .support{
 margin:20px 18px 0;
 padding:18px;
@@ -546,6 +591,87 @@ m[1]
 }
 
 
+function snsLabel(url,index){
+
+const s=
+String(url||"").toLowerCase();
+
+if(s.indexOf("instagram.com")>=0){
+return "📷 Instagram"
+}
+
+if(s.indexOf("facebook.com")>=0||s.indexOf("fb.com")>=0){
+return "📘 Facebook"
+}
+
+if(s.indexOf("x.com")>=0||s.indexOf("twitter.com")>=0){
+return "𝕏 X"
+}
+
+if(s.indexOf("line.me")>=0||s.indexOf("lin.ee")>=0){
+return "💬 LINE"
+}
+
+if(s.indexOf("tiktok.com")>=0){
+return "🎵 TikTok"
+}
+
+return "🔗 SNS "+(index+1)
+}
+
+
+function sourceLinks(article){
+
+const sns=[
+article.sns1,
+article.sns2,
+article.sns3
+]
+.map(safeUrl)
+.filter(Boolean);
+
+const channel=
+safeUrl(
+article.youtubeChannel||
+article.youtubeChannelUrl
+);
+
+if(!sns.length&&!channel){
+return ""
+}
+
+let html=
+'<section class="sourceLinks">'+
+'<p class="sourceLinksTitle">紹介先のSNS・YouTube</p>'+
+'<p class="sourceLinksNote">紹介先の公式ページをご覧いただけます。</p>'+
+'<div class="sourceLinksList">';
+
+sns.forEach(function(url,index){
+
+html+=
+'<a class="sourceLink" href="'+
+esc(url)+
+'" target="_blank" rel="noopener">'+
+esc(snsLabel(url,index))+"</a>"
+});
+
+if(channel){
+
+html+=
+'<a class="sourceLink youtubeSource" href="'+
+esc(channel)+
+'" target="_blank" rel="noopener">'+
+"📺 YouTubeチャンネル"+
+"</a>"
+}
+
+html+=
+"</div></section>";
+
+return html
+}
+
+
 function detailUrl(){
 const u=
 new URL(
@@ -802,6 +928,9 @@ esc(mapUrl)+
 :
 "";
 
+const source=
+sourceLinks(article);
+
 document.getElementById(
 "articleBox"
 ).innerHTML=
@@ -834,6 +963,7 @@ esc(article.content||"")+
 "</div>"+
 
 media(article)+
+source+
 map+
 
 '<div class="support">'+
