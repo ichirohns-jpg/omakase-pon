@@ -1,0 +1,48 @@
+name: 自動シェアページ更新
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+  push:
+    paths:
+      - ".github/workflows/auto-share-pages.yml"
+      - "scripts/generate-share-pages.js"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-share-pages
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリを読み込む
+        uses: actions/checkout@v4
+
+      - name: Node.jsを準備する
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 記事からシェアページを自動生成する
+        env:
+          GAS_URL: "https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec"
+          SITE_URL: "https://ichirohns-jpg.github.io/omakase-pon"
+        run: node scripts/generate-share-pages.js
+
+      - name: 生成したページを公開する
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- share-*.html
+          if git diff --cached --quiet; then
+            echo "変更はありません。"
+            exit 0
+          fi
+          git commit -m "記事シェアページを自動更新"
+          git push
