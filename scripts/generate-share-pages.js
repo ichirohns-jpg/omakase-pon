@@ -5,6 +5,7 @@ const path = require("path");
 
 const GAS_URL = process.env.GAS_URL;
 const SITE_URL = process.env.SITE_URL;
+const FIXED_OGP_URL = SITE_URL+"/ogp-shiki-otasuketai.jpeg";
 
 if(!GAS_URL || !SITE_URL){
   throw new Error("GAS_URL または SITE_URL が設定されていません。");
@@ -22,6 +23,10 @@ function escapeHtml(value){
 function safeUrl(value){
   const text = String(value || "").trim();
   return /^https?:\/\//i.test(text) ? text : "";
+}
+
+function safeMapUrl(value){
+  return safeUrl(value).replace(/%2520/gi,"%20");
 }
 
 function dateJa(value){
@@ -54,14 +59,18 @@ function youtubeEmbed(value){
     : "";
 }
 
-function firstImage(article){
-  const images = Array.isArray(article.images)
-    ? article.images.map(safeUrl).filter(Boolean)
-    : [];
+function firstImage(){
+  return FIXED_OGP_URL;
+}
 
-  return safeUrl(article.ogImage)
-    || images[0]
-    || SITE_URL+"/fujiko-top.jpg";
+function articleText(article){
+  return String(
+    article.content
+    || article.body
+    || article.description
+    || article.text
+    || ""
+  ).trim();
 }
 
 function jsonLd(article,title,description,image,pageUrl){
@@ -91,10 +100,15 @@ function render(article){
   const id = String(article.articleId || "").trim();
   const pageUrl = SITE_URL+"/share-"+id+".html";
   const detailUrl = SITE_URL+"/article.html?id="+encodeURIComponent(id);
-  const title = String(article.theme || "志木の記事");
-  const description = String(
-    article.content || "志木のことなら〜ふじこにおまかせ❣️"
-  ).replace(/\s+/g," ").slice(0,180);
+  const title = String(
+    article.theme
+    || article.title
+    || "志木の記事"
+  ).trim();
+  const text = articleText(article);
+  const description = (
+    text || "志木のことなら〜ふじこにおまかせ❣️"
+  ).replace(/\s+/g," ").slice(0,300);
   const image = firstImage(article);
   const embed = youtubeEmbed(
     article.youtubeEmbedUrl || article.youtubeUrl
@@ -105,7 +119,7 @@ function render(article){
   const images = Array.isArray(article.images)
     ? article.images.map(safeUrl).filter(Boolean).slice(0,6)
     : [];
-  const mapUrl = article.hasMap ? safeUrl(article.mapUrl) : "";
+  const mapUrl = article.hasMap ? safeMapUrl(article.mapUrl) : "";
   const encodedUrl = encodeURIComponent(pageUrl);
   const encodedText = encodeURIComponent(
     title+"｜ふじこの志木案内〜ぽん"
@@ -113,10 +127,11 @@ function render(article){
 
   let video = "";
   if(embed){
+    const joiner = embed.indexOf("?") >= 0 ? "&amp;" : "?";
     video =
       "<div class='video'>"+
       "<iframe src='"+escapeHtml(embed)+
-      "?rel=0&amp;modestbranding=1' title='"+escapeHtml(title)+
+      joiner+"rel=0&amp;modestbranding=1' title='"+escapeHtml(title)+
       "' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>"+
       "</div>";
   }
@@ -163,8 +178,8 @@ function render(article){
     "<meta property='og:url' content='"+escapeHtml(pageUrl)+"'>",
     "<meta property='og:image' content='"+escapeHtml(image)+"'>",
     "<meta property='og:image:secure_url' content='"+escapeHtml(image)+"'>",
-    "<meta property='og:image:width' content='1280'>",
-    "<meta property='og:image:height' content='720'>",
+    "<meta property='og:image:width' content='1536'>",
+    "<meta property='og:image:height' content='807'>",
     "<meta property='og:image:alt' content='"+escapeHtml(title)+"'>",
     "<meta property='article:published_time' content='"+escapeHtml(String(article.date || ""))+"'>",
     "<meta name='twitter:card' content='summary_large_image'>",
@@ -228,7 +243,7 @@ function render(article){
     "<h1>"+escapeHtml(title)+"</h1>",
     "<p class='date'>"+escapeHtml(dateJa(article.date))+"</p>",
     "<div class='tags'>"+tags+"</div>",
-    "<div class='lead'>"+escapeHtml(article.content || "")+"</div>",
+    "<div class='lead'>"+escapeHtml(text)+"</div>",
     video,
     photos,
     map,
@@ -293,6 +308,16 @@ async function main(){
     const file = path.join(process.cwd(),"share-"+id+".html");
     fs.writeFileSync(file,render(article),"utf8");
     console.log("generated "+path.basename(file));
+
+    if(/^\d+$/.test(id)){
+      const legacyId=String(Number(id)).padStart(3,"0");
+
+      if(legacyId!==id){
+        const legacyFile=path.join(process.cwd(),"share-"+legacyId+".html");
+        fs.writeFileSync(legacyFile,render(article),"utf8");
+        console.log("generated "+path.basename(legacyFile));
+      }
+    }
   }
 }
 
