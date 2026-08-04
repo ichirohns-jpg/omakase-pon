@@ -121,9 +121,14 @@ function render(article){
     : [];
   const mapUrl = article.hasMap ? safeMapUrl(article.mapUrl) : "";
   const encodedUrl = encodeURIComponent(pageUrl);
-  const encodedText = encodeURIComponent(
-    title+"｜ふじこの志木案内〜ぽん"
-  );
+  const shareText = [
+    "【ふじこの志木案内〜ぽん】",
+    title,
+    text,
+    "詳しくはこちら",
+    pageUrl
+  ].join("\n\n");
+  const encodedText = encodeURIComponent(shareText);
 
   let video = "";
   if(embed){
@@ -249,11 +254,12 @@ function render(article){
     map,
     "<section class='share-box' aria-label='この記事をシェア'>",
     "<p class='share-title'>この記事をみんなに知らせる</p>",
-    "<p class='share-note'>このページのURLを共有してください。</p>",
+    "<p class='share-note'>Facebookは本文をコピーして投稿欄を開きます。開いたら貼り付けてください。</p>",
     "<div class='share-buttons'>",
-    "<a class='facebook' href='https://www.facebook.com/sharer/sharer.php?u="+encodedUrl+"' target='_blank' rel='noopener'>Facebook</a>",
+    "<button id='facebookButton' class='facebook' type='button'>Facebookに本文付きで投稿</button>",
     "<a class='x' href='https://x.com/intent/post?url="+encodedUrl+"&amp;text="+encodedText+"' target='_blank' rel='noopener'>X</a>",
-    "<a class='line' href='https://social-plugins.line.me/lineit/share?url="+encodedUrl+"' target='_blank' rel='noopener'>LINE</a>",
+    "<a class='line' href='https://line.me/R/msg/text/?"+encodedText+"' target='_blank' rel='noopener'>LINEに本文付きで送る</a>",
+    "<button id='copyTextButton' class='copy' type='button'>文章をコピー</button>",
     "<button id='copyButton' class='copy' type='button'>リンクをコピー</button>",
     "</div>",
     "<p id='copyStatus' class='share-note' aria-live='polite'></p>",
@@ -265,8 +271,14 @@ function render(article){
     "</div>",
     "<script>",
     "const shareUrl="+JSON.stringify(pageUrl)+";",
+    "const shareText="+JSON.stringify(shareText)+";",
+    "const facebookButton=document.getElementById('facebookButton');",
+    "const copyTextButton=document.getElementById('copyTextButton');",
     "const copyButton=document.getElementById('copyButton');",
     "const copyStatus=document.getElementById('copyStatus');",
+    "async function copyValue(value,message){try{await navigator.clipboard.writeText(value);copyStatus.textContent=message;return true;}catch(error){window.prompt('下の文章をコピーしてください。',value);return false;}}",
+    "facebookButton.addEventListener('click',async function(){await copyValue(shareText,'投稿用文章をコピーしました。Facebookが開いたら投稿欄に貼り付けてください。');alert('投稿用文章をコピーしました。Facebookが開いたら、投稿欄を長押しして「ペースト」してください。');location.href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(shareUrl)+'&quote='+encodeURIComponent(shareText);});",
+    "copyTextButton.addEventListener('click',async function(){await copyValue(shareText,'記事本文付きの共有文章をコピーしました。');});",
     "copyButton.addEventListener('click',async function(){try{await navigator.clipboard.writeText(shareUrl);copyStatus.textContent='共有用リンクをコピーしました。';}catch(error){window.prompt('下のURLをコピーしてください。',shareUrl);}});",
     "</script>",
     "</body>",
