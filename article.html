@@ -10,11 +10,15 @@
 <meta property="og:title" content="ふじこの志木案内〜ぽん">
 <meta property="og:description" content="志木のことなら〜ふじこにおまかせ❣️">
 <meta property="og:url" content="https://ichirohns-jpg.github.io/omakase-pon/article.html">
-<meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+<meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
+<meta property="og:image:secure_url" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="807">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ふじこの志木案内〜ぽん">
 <meta name="twitter:description" content="志木のことなら〜ふじこにおまかせ❣️">
-<meta name="twitter:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+<meta name="twitter:image" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
 <link rel="icon" href="fujiko.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="fujiko.jpg">
 
@@ -459,11 +463,11 @@ line-height:1.05
 </nav>
 
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbw4gWUG9hewGTVu5t50YAeQnDWD50WOQ6I1PZ6uOaj7zE0oGo1BFtVuVicd1L1V2Cu8vw/exec";
+const GAS_URL="https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec";
 
 const CHANNEL_URL="https://www.youtube.com/@shikiconcierge";
 
-const TOP_IMAGE="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg";
+const TOP_IMAGE="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg";
 
 const articleId=
 new URLSearchParams(location.search).get("id")||"";
@@ -551,6 +555,11 @@ return /^https?:\/\//i.test(s)
 }
 
 
+function safeMapUrl(v){
+return safeUrl(v).replace(/%2520/gi,"%20")
+}
+
+
 function youtubeEmbed(v){
 const s=
 String(v||"").trim();
@@ -579,7 +588,7 @@ return "https://www.youtube.com/embed/"+m[1]
 
 m=
 s.match(
-/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i
+/youtube\.com\/(?:shorts\/|live\/|watch\?v=)([^?&/]+)/i
 );
 
 return m
@@ -737,17 +746,7 @@ article.content||
 .replace(/\s+/g," ")
 .slice(0,120);
 
-const images=
-Array.isArray(article.images)
-?
-article.images.map(safeUrl).filter(Boolean)
-:
-[];
-
-const image=
-safeUrl(article.ogImage)||
-images[0]||
-TOP_IMAGE;
+const image=TOP_IMAGE;
 
 const url=
 detailUrl();
@@ -781,6 +780,26 @@ image
 );
 
 setMeta(
+'meta[property="og:image:secure_url"]',
+image
+);
+
+setMeta(
+'meta[property="og:image:type"]',
+"image/jpeg"
+);
+
+setMeta(
+'meta[property="og:image:width"]',
+"1536"
+);
+
+setMeta(
+'meta[property="og:image:height"]',
+"807"
+);
+
+setMeta(
 'meta[name="twitter:title"]',
 title
 );
@@ -809,6 +828,18 @@ const format=
 String(article.format||"")
 .toLowerCase();
 
+const images=
+Array.isArray(article.images)
+?
+article.images
+.map(safeUrl)
+.filter(Boolean)
+.slice(0,6)
+:
+[];
+
+let html="";
+
 if(
 format.indexOf("youtube")>=0&&
 embed
@@ -821,7 +852,7 @@ embed.indexOf("?")>=0
 :
 "?";
 
-return '<div class="media">'+
+html+='<div class="media">'+
 '<iframe src="'+
 esc(
 embed+
@@ -831,24 +862,11 @@ joiner+
 '" title="'+
 esc(article.theme||"YouTube動画")+
 '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'+
-"</div>"
+"</div>";
 }
 
-const images=
-Array.isArray(article.images)
-?
-article.images
-.map(safeUrl)
-.filter(Boolean)
-.slice(0,5)
-:
-[];
-
-if(!images.length){
-return "";
-}
-
-return '<div class="media">'+
+if(images.length){
+html+='<div class="media">'+
 '<div class="slider">'+
 images.map(function(src,index){
 
@@ -866,7 +884,10 @@ esc(article.theme||"記事")+
 "画像を横にスライドできます（"+
 images.length+
 "枚）</div>"+
-"</div>"
+"</div>";
+}
+
+return html;
 }
 
 
@@ -911,7 +932,7 @@ encodeURIComponent(
 const mapUrl=
 article.hasMap
 ?
-safeUrl(article.mapUrl)
+safeMapUrl(article.mapUrl)
 :
 "";
 
@@ -1089,8 +1110,10 @@ document.getElementById(
 ).innerHTML=
 '<div class="empty">'+
 esc(error.message)+
-"</div>"
+"</div>";
 }
+
+return html;
 }
 
 load();
