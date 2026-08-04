@@ -10,8 +10,13 @@
 <meta property="og:title" content="ふじこの志木案内〜ぽん">
 <meta property="og:description" content="志木のことなら〜ふじこにおまかせ❣️">
 <meta property="og:url" content="https://ichirohns-jpg.github.io/omakase-pon/">
-<meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/fujiko-top.jpg">
+<meta property="og:image" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
+<meta property="og:image:secure_url" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="807">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketai.jpeg">
 <link rel="icon" href="fujiko.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="fujiko.jpg">
 <link rel="manifest" href="manifest.json">
@@ -648,7 +653,7 @@ main{
 </nav>
 
 <script>
-const GAS_URL="https://script.google.com/macros/s/AKfycbw4gWUG9hewGTVu5t50YAeQnDWD50WOQ6I1PZ6uOaj7zE0oGo1BFtVuVicd1L1V2Cu8vw/exec";
+const GAS_URL="https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec";
 const selectedCategory=new URLSearchParams(location.search).get("category")||"";
 
 function jsonp(params){
@@ -700,6 +705,10 @@ function safeUrl(v){
   return /^https?:\/\//i.test(s)?s:"";
 }
 
+function safeMapUrl(v){
+  return safeUrl(v).replace(/%2520/gi,"%20");
+}
+
 function youtubeEmbed(v){
   const s=String(v||"").trim();
 
@@ -715,7 +724,7 @@ function youtubeEmbed(v){
     return "https://www.youtube.com/embed/"+m[1];
   }
 
-  m=s.match(/youtube\.com\/(?:shorts\/|watch\?v=)([^?&/]+)/i);
+  m=s.match(/youtube\.com\/(?:shorts\/|live\/|watch\?v=)([^?&/]+)/i);
 
   return m
     ?"https://www.youtube.com/embed/"+m[1]
@@ -762,40 +771,46 @@ function media(a){
   const isYoutube=
     String(a.format||"").toLowerCase().indexOf("youtube")>=0;
 
+  const images=Array.isArray(a.images)
+    ?a.images.map(safeUrl).filter(Boolean).slice(0,6)
+    :[];
+
+  let html="";
+
   if(isYoutube&&embed){
-    return '<div class="media">'+
+    const joiner=embed.indexOf("?")>=0?"&":"?";
+
+    html+='<div class="media">'+
       '<iframe src="'+esc(embed)+
-      '?rel=0&modestbranding=1" title="'+
+      joiner+'rel=0&modestbranding=1" title="'+
       esc(a.theme)+
       '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'+
       '</div>';
   }
 
-  const images=Array.isArray(a.images)
-    ?a.images.map(safeUrl).filter(Boolean).slice(0,5)
-    :[];
+  if(images.length){
+    html+='<div class="media">'+
+      '<div class="slider">'+
+      images.map(function(src,i){
+        return '<img src="'+esc(src)+
+          '" alt="'+esc(a.theme)+
+          " "+(i+1)+
+          '枚目" loading="lazy">';
+      }).join("")+
+      '</div>'+
+      '<div class="slideHint">画像を横にスライドできます（'+
+      images.length+
+      '枚）</div>'+
+      '</div>';
+  }
 
-  if(!images.length)return "";
-
-  return '<div class="media">'+
-    '<div class="slider">'+
-    images.map(function(src,i){
-      return '<img src="'+esc(src)+
-        '" alt="'+esc(a.theme)+
-        " "+(i+1)+
-        '枚目" loading="lazy">';
-    }).join("")+
-    '</div>'+
-    '<div class="slideHint">画像を横にスライドできます（'+
-    images.length+
-    '枚）</div>'+
-    '</div>';
+  return html;
 }
 
 function card(a){
   const cats=Array.isArray(a.categories)?a.categories:[];
 
-  const map=a.hasMap&&safeUrl(a.mapUrl)
+  const map=a.hasMap&&safeMapUrl(a.mapUrl)
     ?'<div class="location">📍 '+
       esc(a.placeName||"場所案内")+
       '<a href="'+esc(a.mapUrl)+
