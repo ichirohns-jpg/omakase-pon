@@ -698,7 +698,24 @@ return u.href
 
 
 function sharePageUrl(article){
+const id=
+String(
+article&&article.articleId||
+articleId||
+""
+).trim();
+
+if(!id){
 return detailUrl()
+}
+
+const u=
+new URL(
+"share-"+id+".html",
+location.href
+);
+
+return u.href
 }
 
 
