@@ -1004,10 +1004,10 @@ CHANNEL_URL+
 
 '<div class="shareBox">'+
 '<p class="shareTitle">この記事をみんなに知らせる</p>'+
-'<p class="shareNote">リンクをコピーしたり、SNSで簡単に共有できます。</p>'+
+'<p class="shareNote">Facebookで文章も付ける場合は、本文をコピーして投稿欄に貼り付けてください。</p>'+
 '<div class="share">'+
 
-'<button class="fb" onclick="facebookShare()">Facebookでシェア</button>'+
+'<button class="fb" onclick="facebookShare()">Facebookに本文付きで投稿</button>'+
 
 '<a class="x" href="'+
 "https://twitter.com/intent/tweet?url="+
@@ -1022,6 +1022,8 @@ encodedText+
 '" target="_blank" rel="noopener">LINEで送る</a>'+
 
 '<button class="copy" onclick="copyUrl()">リンクをコピー</button>'+
+
+'<button class="copy" onclick="copyShareText()">本文をコピー</button>'+
 
 '<button class="copy" onclick="shareOther()">その他のSNS</button>'+
 
@@ -1110,10 +1112,49 @@ sharePageUrl(article)
 }
 
 
+async function copyShareText(){
+
+const text=
+getShareText();
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+alert(
+"本文をコピーしました。投稿欄に貼り付けてください。"
+)
+
+}catch(error){
+
+prompt(
+"下の本文をコピーしてください",
+text
+)
+}
+}
+
+
 async function facebookShare(){
 
 const text=
 getShareText();
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+alert(
+"本文をコピーしました。Facebookが開いたら、投稿欄に貼り付けてください。"
+)
+
+}catch(error){
+
+prompt(
+"Facebookに貼り付ける本文をコピーしてください",
+text
+)
+}
 
 const url=
 sharePageUrl(
