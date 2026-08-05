@@ -1004,10 +1004,10 @@ CHANNEL_URL+
 
 '<div class="shareBox">'+
 '<p class="shareTitle">この記事をみんなに知らせる</p>'+
-'<p class="shareNote">Facebookは本文をコピーして投稿欄を開きます。開いたら貼り付けてください。</p>'+
+'<p class="shareNote">リンクをコピーしたり、SNSで簡単に共有できます。</p>'+
 '<div class="share">'+
 
-'<button class="fb" onclick="facebookShare()">Facebookに本文付きで投稿</button>'+
+'<button class="fb" onclick="facebookShare()">Facebookでシェア</button>'+
 
 '<a class="x" href="'+
 "https://twitter.com/intent/tweet?url="+
@@ -1019,13 +1019,11 @@ encodedText+
 '<a class="line" href="'+
 "https://line.me/R/msg/text/?"+
 encodedText+
-'" target="_blank" rel="noopener">LINEに本文付きで送る</a>'+
+'" target="_blank" rel="noopener">LINEで送る</a>'+
 
-'<button class="copy" onclick="copyShareText()">文章をコピー</button>'+
+'<button class="copy" onclick="copyUrl()">リンクをコピー</button>'+
 
-'<button class="copy" onclick="copyUrl()">リンクコピー</button>'+
-
-'<button class="insta" onclick="instagram()">Instagram</button>'+
+'<button class="copy" onclick="shareOther()">その他のSNS</button>'+
 
 "</div>"+
 "</div>"
@@ -1044,7 +1042,7 @@ try{
 await navigator.clipboard.writeText(url);
 
 alert(
-"記事URLをコピーしました。"
+"共有リンクをコピーしました。"
 )
 
 }catch(error){
@@ -1054,7 +1052,46 @@ prompt(
 url
 )
 }
+}
 
+
+async function shareOther(){
+
+const article=
+window.currentArticle||{};
+
+const url=
+sharePageUrl(article);
+
+const title=
+article.theme||"ふじこの志木案内〜ぽん";
+
+const text=
+"【ふじこの志木案内〜ぽん】\\n"+
+title+"\\n"+
+url;
+
+if(navigator.share){
+
+try{
+
+await navigator.share({
+title:title,
+text:text,
+url:url
+});
+
+return
+
+}catch(error){
+
+if(error&&error.name==="AbortError"){
+return
+}
+}
+}
+
+await copyUrl()
 }
 
 
@@ -1073,49 +1110,10 @@ sharePageUrl(article)
 }
 
 
-async function copyShareText(){
-
-const text=
-getShareText();
-
-try{
-
-await navigator.clipboard.writeText(text);
-
-alert(
-"記事本文付きの共有文章をコピーしました。"
-)
-
-}catch(error){
-
-prompt(
-"下の文章をコピーしてください",
-text
-)
-}
-}
-
-
 async function facebookShare(){
 
 const text=
 getShareText();
-
-try{
-
-await navigator.clipboard.writeText(text);
-
-alert(
-"投稿用文章をコピーしました。Facebookが開いたら、投稿欄を長押しして「ペースト」してください。"
-)
-
-}catch(error){
-
-prompt(
-"Facebookに貼り付ける文章をコピーしてください",
-text
-)
-}
 
 const url=
 sharePageUrl(
@@ -1127,18 +1125,6 @@ location.href=
 encodeURIComponent(url)+
 "&quote="+
 encodeURIComponent(text)
-}
-
-
-async function instagram(){
-
-await copyUrl();
-
-window.open(
-"https://www.instagram.com/",
-"_blank",
-"noopener"
-)
 }
 
 
