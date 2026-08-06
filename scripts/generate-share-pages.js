@@ -291,27 +291,74 @@ function render(article){
   return html;
 }
 
+
+function sleep(ms){
+  return new Promise(function(resolve){
+    setTimeout(resolve,ms);
+  });
+}
+
+async function fetchArticlesWithRetry(){
+  const baseEndpoint = GAS_URL+"?mode=articles&callback=autoSharePages";
+  let lastError = null;
+
+  for(let attempt=1; attempt<=5; attempt++){
+    try{
+      const endpoint = baseEndpoint+"&cacheBust="+Date.now();
+      const response = await fetch(endpoint);
+
+      if(!response.ok){
+        throw new Error("GAS HTTP "+response.status);
+      }
+
+      const raw = await response.text();
+      const left = raw.indexOf("(");
+      const right = raw.lastIndexOf(")");
+
+      if(left < 0 || right <= left){
+        throw new Error("GASのJSONP応答を読み取れません。");
+      }
+
+      const data = JSON.parse(raw.slice(left+1,right));
+
+      if(!data.ok || !Array.isArray(data.articles)){
+        throw new Error("公開記事一覧を取得できません。");
+      }
+
+      if(data.articles.length === 0){
+        throw new Error("GASから公開記事が0件返りました。");
+      }
+
+      console.log(
+        "GASから取得した公開記事: "+
+        data.articles.length+
+        "件 / ID: "+
+        data.articles.map(function(article){
+          return String(article.articleId || "").trim();
+        }).join(", ")
+      );
+
+      return data;
+    }catch(error){
+      lastError = error;
+      console.warn(
+        "GAS取得失敗 "+
+        attempt+
+        "/5: "+
+        error.message
+      );
+
+      if(attempt < 5){
+        await sleep(5000);
+      }
+    }
+  }
+
+  throw lastError || new Error("GASから記事を取得できませんでした。");
+}
+
 async function main(){
-  const endpoint = GAS_URL+"?mode=articles&callback=autoSharePages";
-  const response = await fetch(endpoint);
-
-  if(!response.ok){
-    throw new Error("GAS HTTP "+response.status);
-  }
-
-  const raw = await response.text();
-  const left = raw.indexOf("(");
-  const right = raw.lastIndexOf(")");
-
-  if(left < 0 || right <= left){
-    throw new Error("GASのJSONP応答を読み取れません。");
-  }
-
-  const data = JSON.parse(raw.slice(left+1,right));
-
-  if(!data.ok || !Array.isArray(data.articles)){
-    throw new Error("公開記事一覧を取得できません。");
-  }
+  const data = await fetchArticlesWithRetry();
 
   for(const article of data.articles){
     const id = String(article.articleId || "").trim();
@@ -340,3 +387,4 @@ main().catch(function(error){
   console.error(error);
   process.exit(1);
 });
+
