@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
+  repository_dispatch:
+    types:
+      - articles-updated
   push:
     paths:
       - ".github/workflows/auto-share-pages.yml"
@@ -19,6 +22,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: リポジトリを読み込む
@@ -46,3 +50,4 @@ jobs:
           fi
           git commit -m "記事シェアページを自動更新"
           git push
+
