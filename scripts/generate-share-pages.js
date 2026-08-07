@@ -122,7 +122,6 @@ function render(article) {
   const description = (text || "志木のことなら〜ふじこにおまかせ❣️")
     .replace(/\s+/g, " ")
     .slice(0, 300);
-  const image = FIXED_OGP_URL;
   const embed = youtubeEmbedFromArticle(article);
   const categories = Array.isArray(article.categories)
     ? article.categories
@@ -130,13 +129,22 @@ function render(article) {
   const images = Array.isArray(article.images)
     ? article.images.map(safeUrl).filter(Boolean).slice(0, 6)
     : [];
+  const image = images[0] || FIXED_OGP_URL;
+  const cacheVersion = encodeURIComponent(
+    "2-" +
+      String(article.updatedAt || article.date || id || "v2")
+        .replace(/[^0-9A-Za-z_-]/g, "-")
+  );
+  const sharePageUrl = pageUrl + "?v=" + cacheVersion;
+  const imageWithVersion =
+    image + (image.includes("?") ? "&" : "?") + "v=" + cacheVersion;
   const mapUrl = article.hasMap ? safeMapUrl(article.mapUrl) : "";
   const shareText = [
     "【ふじこの志木案内〜ぽん】",
     title,
     text,
     "詳しくはこちら",
-    pageUrl
+    sharePageUrl
   ].join("\n\n");
 
   const video = embed
@@ -183,11 +191,10 @@ function render(article) {
 <meta property="og:locale" content="ja_JP">
 <meta property="og:title" content="${escapeHtml(title)}">
 <meta property="og:description" content="${escapeHtml(description)}">
-<meta property="og:url" content="${escapeHtml(pageUrl)}">
-<meta property="og:image" content="${escapeHtml(image)}">
-<meta property="og:image:secure_url" content="${escapeHtml(image)}">
-<meta property="og:image:width" content="1536">
-<meta property="og:image:height" content="807">
+<meta property="og:url" content="${escapeHtml(sharePageUrl)}">
+<meta property="og:image" content="${escapeHtml(imageWithVersion)}">
+<meta property="og:image:url" content="${escapeHtml(imageWithVersion)}">
+<meta property="og:image:secure_url" content="${escapeHtml(imageWithVersion)}">
 <meta property="og:image:alt" content="${escapeHtml(title)}">
 <meta property="article:published_time" content="${escapeHtml(
     String(article.date || "")
@@ -195,7 +202,7 @@ function render(article) {
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${escapeHtml(title)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
-<meta name="twitter:image" content="${escapeHtml(image)}">
+<meta name="twitter:image" content="${escapeHtml(imageWithVersion)}">
 <meta name="twitter:image:alt" content="${escapeHtml(title)}">
 <link rel="canonical" href="${escapeHtml(pageUrl)}">
 <link rel="icon" href="fujiko.jpg" type="image/jpeg">
@@ -207,8 +214,8 @@ function render(article) {
     description,
     datePublished: String(article.date || ""),
     dateModified: String(article.updatedAt || article.date || ""),
-    image,
-    mainEntityOfPage: pageUrl,
+    image: imageWithVersion,
+    mainEntityOfPage: sharePageUrl,
     publisher: {
       "@type": "Organization",
       name: "ふじこの志木案内〜ぽん",
@@ -232,10 +239,10 @@ function render(article) {
   )}</p><div class="tags">${tags}</div><div class="lead">${escapeHtml(
     text
   )}</div>${video}${photos}${map}
-<section class="share-box" aria-label="この記事をシェア"><p class="share-title">この記事をみんなに知らせる</p><p class="share-note">Facebookで文章も付ける場合は、本文をコピーして投稿欄に貼り付けてください。</p><div class="share-buttons"><button id="facebookButton" class="facebook" type="button">Facebookに本文付きで投稿</button><a class="x" href="https://x.com/intent/post?url=${encodeURIComponent(pageUrl)}&amp;text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">X</a><a class="line" href="https://line.me/R/share?text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">LINEで送る</a><button id="copyTextButton" class="copy" type="button">本文をコピー</button><button id="copyButton" class="copy" type="button">リンクをコピー</button><button id="shareOtherButton" class="copy" type="button">その他のSNS</button></div><p id="copyStatus" class="share-note" aria-live="polite"></p></section>
+<section class="share-box" aria-label="この記事をシェア"><p class="share-title">この記事をみんなに知らせる</p><p class="share-note">Facebookで文章も付ける場合は、本文をコピーして投稿欄に貼り付けてください。</p><div class="share-buttons"><button id="facebookButton" class="facebook" type="button">Facebookに本文付きで投稿</button><a class="x" href="https://x.com/intent/post?url=${encodeURIComponent(sharePageUrl)}&amp;text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">X</a><a class="line" href="https://line.me/R/share?text=${encodeURIComponent(shareText)}" target="_blank" rel="noopener">LINEで送る</a><button id="copyTextButton" class="copy" type="button">本文をコピー</button><button id="copyButton" class="copy" type="button">リンクをコピー</button><button id="shareOtherButton" class="copy" type="button">その他のSNS</button></div><p id="copyStatus" class="share-note" aria-live="polite"></p></section>
 <a class="article-link" href="${escapeHtml(detailUrl)}">通常の記事ページを開く</a></main></article><footer class="footer">ふじこの志木案内〜ぽん<br>志木のことなら〜ふじこにおまかせ❣️</footer></div>
 <script>
-const shareUrl=${jsonForScript(pageUrl)};
+const shareUrl=${jsonForScript(sharePageUrl)};
 const shareText=${jsonForScript(shareText)};
 const copyStatus=document.getElementById('copyStatus');
 async function copyValue(value,message){try{await navigator.clipboard.writeText(value);copyStatus.textContent=message;return true;}catch(error){window.prompt('下の本文またはリンクをコピーしてください。',value);return false;}}
@@ -318,3 +325,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
+
