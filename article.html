@@ -715,6 +715,26 @@ new URL(
 location.href
 );
 
+const rawVersion=
+article&&(
+article.updatedAt||
+article.date||
+article.articleId
+)||
+articleId||
+"v2";
+
+const version=
+encodeURIComponent(
+"2-"+String(rawVersion)
+.replace(/[^0-9A-Za-z_-]/g,"-")
+);
+
+u.searchParams.set(
+"v",
+version
+);
+
 return u.href
 }
 
@@ -746,7 +766,18 @@ article.content||
 .replace(/\s+/g," ")
 .slice(0,120);
 
-const image=TOP_IMAGE;
+const articleImages=
+Array.isArray(article.images)
+?
+article.images
+.map(safeUrl)
+.filter(Boolean)
+:
+[];
+
+const image=
+articleImages[0]||
+TOP_IMAGE;
 
 const url=
 detailUrl();
