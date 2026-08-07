@@ -11,6 +11,7 @@ if (!GAS_URL || !SITE_URL) {
 }
 
 const FIXED_OGP_URL = SITE_URL + "/ogp-shiki-otasuketai.jpeg";
+const SHARE_CACHE_VERSION = "3-2026-08-08";
 
 function escapeHtml(value) {
   return String(value == null ? "" : value)
@@ -129,15 +130,15 @@ function render(article) {
   const images = Array.isArray(article.images)
     ? article.images.map(safeUrl).filter(Boolean).slice(0, 6)
     : [];
-  const image = images[0] || FIXED_OGP_URL;
+  const image = images[0] || safeUrl(article.ogImage) || FIXED_OGP_URL;
   const cacheVersion = encodeURIComponent(
-    "2-" +
+    SHARE_CACHE_VERSION +
+      "-" +
       String(article.updatedAt || article.date || id || "v2")
         .replace(/[^0-9A-Za-z_-]/g, "-")
   );
   const sharePageUrl = pageUrl + "?v=" + cacheVersion;
-  const imageWithVersion =
-    image + (image.includes("?") ? "&" : "?") + "v=" + cacheVersion;
+  const imageWithVersion = image;
   const mapUrl = article.hasMap ? safeMapUrl(article.mapUrl) : "";
   const shareText = [
     "【ふじこの志木案内〜ぽん】",
@@ -325,5 +326,3 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
-
-
