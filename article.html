@@ -472,6 +472,8 @@ const TOP_IMAGE="https://ichirohns-jpg.github.io/omakase-pon/ogp-shiki-otasuketa
 const articleId=
 new URLSearchParams(location.search).get("id")||"";
 
+const SHARE_CACHE_VERSION="3-2026-08-08";
+
 
 function jsonp(params){
 return new Promise(function(resolve,reject){
@@ -726,7 +728,7 @@ articleId||
 
 const version=
 encodeURIComponent(
-"2-"+String(rawVersion)
+SHARE_CACHE_VERSION+"-"+String(rawVersion)
 .replace(/[^0-9A-Za-z_-]/g,"-")
 );
 
@@ -777,6 +779,7 @@ article.images
 
 const image=
 articleImages[0]||
+safeUrl(article.ogImage)||
 TOP_IMAGE;
 
 const url=
@@ -1254,4 +1257,3 @@ load();
 
 </body>
 </html>
-
