@@ -652,68 +652,6 @@ async function prepareLocalOgp(
   id,
   images
 ) {
-
-  const candidates =
-    ogpCandidates(
-      article,
-      images
-    );
-
-  for (
-    const sourceUrl
-    of candidates
-  ) {
-
-    if (
-      sourceUrl.startsWith(
-        SITE_URL + "/"
-      )
-    ) {
-
-      return {
-
-        fileName: "",
-
-        url:
-          sourceUrl,
-
-        type:
-          contentTypeFromExtension(
-            sourceUrl.split("?")[0]
-          ),
-
-        hash:
-          sha1(sourceUrl)
-            .slice(0, 12)
-      };
-    }
-
-    try {
-
-      return await downloadOgpToLocal(
-        sourceUrl,
-        id
-      );
-
-    } catch (error) {
-
-      console.warn(
-        "OGP画像取得失敗: 記事ID=" +
-          id +
-          " source=" +
-          sourceUrl +
-          " / " +
-          error.message
-      );
-    }
-  }
-
-  console.warn(
-    "記事ID=" +
-      id +
-      " は記事画像を取得できないため標準OGP画像を使用します。"
-  );
-
   return {
 
     fileName:
