@@ -1340,22 +1340,18 @@ Facebookに本文付きで投稿
 </button>
 
 <a
+id="xShareButton"
 class="x"
-href="https://x.com/intent/post?url=${encodeURIComponent(
-    sharePageUrl
-  )}&amp;text=${encodeURIComponent(
-    shareText
-  )}"
+href="#"
 target="_blank"
 rel="noopener">
 X
 </a>
 
 <a
+id="lineShareButton"
 class="line"
-href="https://line.me/R/share?text=${encodeURIComponent(
-    shareText
-  )}"
+href="#"
 target="_blank"
 rel="noopener">
 LINEで送る
@@ -1428,6 +1424,32 @@ ${jsonForScript(
     shareText
   )};
 
+function freshShareUrl(){
+
+const url=
+new URL(
+shareUrl
+);
+
+url.searchParams.set(
+'r',
+String(Date.now())
+);
+
+return url.href;
+}
+
+function freshShareText(){
+
+const url=
+freshShareUrl();
+
+return shareText.replace(
+shareUrl,
+url
+);
+}
+
 const copyStatus=
 document.getElementById(
 'copyStatus'
@@ -1470,9 +1492,15 @@ document
 'click',
 async function(){
 
+const currentUrl=
+freshShareUrl();
+
+const currentText=
+freshShareText();
+
 const copied=
 await copyValue(
-shareText,
+currentText,
 '本文をコピーしました。Facebookが開いたら投稿欄に貼り付けてください。'
 );
 
@@ -1487,11 +1515,11 @@ alert(
 location.href=
 'https://www.facebook.com/sharer/sharer.php?u='+
 encodeURIComponent(
-shareUrl
+currentUrl
 )+
 '&quote='+
 encodeURIComponent(
-shareText
+currentText
 );
 
 }
@@ -1505,8 +1533,11 @@ document
 'click',
 async function(){
 
+const currentText=
+freshShareText();
+
 await copyValue(
-shareText,
+currentText,
 '本文をコピーしました。投稿欄に貼り付けてください。'
 );
 
@@ -1521,8 +1552,11 @@ document
 'click',
 async function(){
 
+const currentUrl=
+freshShareUrl();
+
 await copyValue(
-shareUrl,
+currentUrl,
 '共有用リンクをコピーしました。'
 );
 
@@ -1536,6 +1570,12 @@ document
 .addEventListener(
 'click',
 async function(){
+
+const currentUrl=
+freshShareUrl();
+
+const currentText=
+freshShareText();
 
 if(
 navigator.share
@@ -1551,10 +1591,10 @@ ${jsonForScript(
   )},
 
 text:
-shareText,
+currentText,
 
 url:
-shareUrl
+currentUrl
 
 });
 
@@ -1574,8 +1614,59 @@ return;
 }
 
 await copyValue(
-shareUrl,
+currentUrl,
 '共有用リンクをコピーしました。'
+);
+
+}
+);
+
+document
+.getElementById(
+'xShareButton'
+)
+.addEventListener(
+'click',
+function(event){
+
+event.preventDefault();
+
+const currentUrl=
+freshShareUrl();
+
+const currentText=
+freshShareText();
+
+window.open(
+'https://x.com/intent/post?url='+
+encodeURIComponent(currentUrl)+
+'&text='+
+encodeURIComponent(currentText),
+'_blank',
+'noopener,noreferrer'
+);
+
+}
+);
+
+document
+.getElementById(
+'lineShareButton'
+)
+.addEventListener(
+'click',
+function(event){
+
+event.preventDefault();
+
+const currentText=
+freshShareText();
+
+window.open(
+'https://line.me/R/share?text='+
+encodeURIComponent(currentText),
+'_blank',
+'noopener,noreferrer'
 );
 
 }
