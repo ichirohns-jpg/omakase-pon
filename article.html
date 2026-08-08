@@ -699,7 +699,7 @@ return u.href
 }
 
 
-function sharePageUrl(article){
+function sharePageUrl(article,fresh){
 const id=
 String(
 article&&article.articleId||
@@ -736,6 +736,14 @@ u.searchParams.set(
 "v",
 version
 );
+
+if(fresh){
+
+u.searchParams.set(
+"r",
+String(Date.now())
+);
+}
 
 return u.href
 }
@@ -947,7 +955,7 @@ article.categories
 [];
 
 const shareUrl=
-sharePageUrl(article);
+sharePageUrl(article,true);
 
 const encodedUrl=
 encodeURIComponent(
@@ -1040,17 +1048,9 @@ CHANNEL_URL+
 
 '<button class="fb" onclick="facebookShare()">Facebookに本文付きで投稿</button>'+
 
-'<a class="x" href="'+
-"https://twitter.com/intent/tweet?url="+
-encodedUrl+
-"&text="+
-encodedText+
-'" target="_blank" rel="noopener">X</a>'+
+"<a id=\"xShareButton\" class=\"x\" href=\"#\" onclick=\"return shareToX()\">X</a>"+
 
-'<a class="line" href="'+
-"https://line.me/R/msg/text/?"+
-encodedText+
-'" target="_blank" rel="noopener">LINEで送る</a>'+
+"<a id=\"lineShareButton\" class=\"line\" href=\"#\" onclick=\"return shareToLine()\">LINEで送る</a>"+
 
 '<button class="copy" onclick="copyUrl()">リンクをコピー</button>'+
 
@@ -1067,7 +1067,8 @@ async function copyUrl(){
 
 const url=
 sharePageUrl(
-window.currentArticle
+window.currentArticle,
+true
 );
 
 try{
@@ -1094,7 +1095,7 @@ const article=
 window.currentArticle||{};
 
 const url=
-sharePageUrl(article);
+sharePageUrl(article,true);
 
 const title=
 article.theme||"ふじこの志木案内〜ぽん";
@@ -1138,8 +1139,48 @@ return [
 article.theme||"志木の記事",
 article.content||"",
 "詳しくはこちら",
-sharePageUrl(article)
+sharePageUrl(article,true)
 ].join("\n\n")
+}
+
+
+function shareToX(){
+
+const url=
+sharePageUrl(
+window.currentArticle,
+true
+);
+
+const text=
+getShareText();
+
+window.open(
+"https://x.com/intent/post?url="+
+encodeURIComponent(url)+
+"&text="+
+encodeURIComponent(text),
+"_blank",
+"noopener,noreferrer"
+);
+
+return false
+}
+
+
+function shareToLine(){
+
+const text=
+getShareText();
+
+window.open(
+"https://line.me/R/msg/text/?"+
+encodeURIComponent(text),
+"_blank",
+"noopener,noreferrer"
+);
+
+return false
 }
 
 
@@ -1189,7 +1230,8 @@ text
 
 const url=
 sharePageUrl(
-window.currentArticle
+window.currentArticle,
+true
 );
 
 location.href=
