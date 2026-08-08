@@ -2,11 +2,14 @@ name: 自動シェアページ更新
 
 on:
   workflow_dispatch:
+
   schedule:
     - cron: "*/5 * * * *"
+
   repository_dispatch:
     types:
       - articles-updated
+
   push:
     paths:
       - ".github/workflows/auto-share-pages.yml"
@@ -20,11 +23,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
   generate:
+
     runs-on: ubuntu-latest
+
     timeout-minutes: 10
 
     steps:
+
       - name: リポジトリを読み込む
         uses: actions/checkout@v4
 
@@ -35,19 +42,30 @@ jobs:
 
       - name: 記事からシェアページを自動生成する
         env:
+
           GAS_URL: "https://script.google.com/macros/s/AKfycbzoZ6BPqcHTmigI6zdUB96sAPTtZ4PhMF9-pLWr8y3nRtkbGFrPbUopm2gNx3d4YBfTYw/exec"
+
           SITE_URL: "https://ichirohns-jpg.github.io/omakase-pon"
+
         run: node scripts/generate-share-pages.js
 
-      - name: 生成したページを公開する
+      - name: 生成したページとOGP画像を公開する
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- share-*.html
-          if git diff --cached --quiet; then
-            echo "変更はありません。"
-            exit 0
-          fi
-          git commit -m "記事シェアページを自動更新"
-          git push
 
+          git config user.name "github-actions[bot]"
+
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+
+            echo "変更はありません。"
+
+            exit 0
+
+          fi
+
+          git commit -m "記事シェアページとOGP画像を自動更新"
+
+          git push
