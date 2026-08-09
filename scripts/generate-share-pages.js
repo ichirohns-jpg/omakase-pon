@@ -12,7 +12,10 @@ if (!GAS_URL || !SITE_URL) {
 }
 
 const FALLBACK_OGP_FILE = "ogp-shiki-otasuketai.jpeg";
-const FIXED_OGP_URL = SITE_URL + "/" + FALLBACK_OGP_FILE;
+const FIXED_OGP_VERSION = "601";
+const FIXED_OGP_URL = SITE_URL + "/" + FALLBACK_OGP_FILE + "?v=" + FIXED_OGP_VERSION;
+const OGP_WIDTH = 1200;
+const OGP_HEIGHT = 630;
 const SHARE_CACHE_VERSION = "4-2026-08-08";
 const OGP_FILE_PREFIX = "ogp-share-";
 const MAX_OGP_BYTES = 15 * 1024 * 1024;
@@ -761,9 +764,9 @@ function render(
     );
 
   const sharePageUrl =
-    pageUrl +
-    "?v=" +
-    cacheVersion;
+    SITE_URL +
+    "/share.html?id=" +
+    encodeURIComponent(id);
 
   const mapUrl =
     article.hasMap
@@ -841,6 +844,8 @@ function render(
 
 <meta charset="UTF-8">
 
+<meta property="fb:app_id" content="1519320129765759">
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <meta name="theme-color" content="#e83e8c">
@@ -886,6 +891,10 @@ function render(
 <meta property="og:image:type" content="${escapeHtml(
     ogpType
   )}">
+
+<meta property="og:image:width" content="${OGP_WIDTH}">
+
+<meta property="og:image:height" content="${OGP_HEIGHT}">
 
 <meta property="og:image:alt" content="${escapeHtml(
     title
@@ -1952,3 +1961,4 @@ main().catch(
     process.exit(1);
   }
 );
+
